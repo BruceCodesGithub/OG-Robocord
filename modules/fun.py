@@ -8,6 +8,7 @@ class Fun(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
     @commands.command(name="anime")
+    @commands.cooldown(1, 10, commands.BucketType.user)
     async def _anime(self, ctx, *, query):
       try:
         anime = animec.Anime(query)
