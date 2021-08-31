@@ -136,27 +136,6 @@ async def on_ready():
     print("{} is Ready and Online!".format(bot.user))
 
 @bot.event
-async def on_message(message):
-  if message.author.bot == True:
-    return
-  if message.channel.id == 750218011230601241:
-    role = discord.utils.find(lambda r: r.id == 721216973035274300, message.guild.roles)
-    if role in message.author.roles:
-      return
-    else:
-      embed=discord.Embed(title="Suggestion", description=f"{message.content}", color=discord.Color.blurple())
-      embed.set_footer(text=f"{message.author.name}", icon_url=f"{message.author.avatar_url}")
-      message1 = await message.channel.send(embed=embed)
-      await message1.add_reaction("✅")
-      await message1.add_reaction("🤷")
-      await message1.add_reaction("❌")
-    
-      await message.delete()
-  await bot.process_commands(message)
-
-
-
-@bot.event
 async def on_command_error(ctx, error):
     exception = error
     if hasattr(ctx.command, 'on_error'):
