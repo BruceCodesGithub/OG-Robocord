@@ -21,7 +21,11 @@ class Fun(commands.Cog):
       embed.add_field(name="Status", value=f"{anime.status}", inline=False)
       embed.add_field(name="Episodes", value=f"{anime.episodes}", inline=False)
       embed.set_image(url=anime.poster)
-      await ctx.send(embed=embed)
+      if anime.rating == "Rx - Hentai":
+        await ctx.send("Anime not found.")
+      else:
+        
+        await ctx.send(embed=embed)
 
     @commands.command(name="aninews")
     async def _anime_news(self, ctx):
