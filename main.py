@@ -10,11 +10,15 @@ import calendar, math, unicodedata, random, os, time, io
 import ext.helpers as helpers
 from PIL import Image, ImageDraw, ImageFont, ImageFilter
 from dotenv import load_dotenv
+import asyncpg
 
 global embed_style1
 embed_style1 = discord.Embed()
 
-
+"""
+async def create_db_pool():
+    bot.con=await asyncpg.create_pool(database='pokex',user='postgres',password='root')
+"""
 
 class HelpCommand(commands.HelpCommand):
   
@@ -317,6 +321,6 @@ async def ping(ctx):
         await message.edit(embed=embed)
 
 
-
+#bot.loop.run_until_complete(create_db_pool())
 # keep_alive()
 bot.run(os.getenv("TOKEN"))
