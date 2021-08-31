@@ -98,9 +98,6 @@ bot.load_extension('jishaku')
 bot.load_extension('modules.fun')
 bot.default_owner = 571638000661037056
 
-class pools:
-    config = asyncpg.create_pool(database='codingbot_db',
-                                 init=helpers.init_connection)
 
 @bot.event
 async def on_invite_create(invite):
