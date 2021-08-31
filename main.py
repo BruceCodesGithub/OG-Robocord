@@ -1,23 +1,28 @@
 # from keep_alive import keep_alive
-import discord
-from discord.ext import commands, tasks
-from discord.ext.commands import (
-    when_mentioned_or,
-    command,
-    has_permissions,
-    MissingPermissions,
-    cooldown,
-    BucketType,
-)
+import asyncio
+import calendar
 import datetime
-import asyncio, aiohttp
-from discord import DMChannel
-import requests, humanize, json, asyncpg
-import calendar, math, unicodedata, random, os, time, io
-import ext.helpers as helpers
-from PIL import Image, ImageDraw, ImageFont, ImageFilter
-from dotenv import load_dotenv
+import io
+import json
+import math
+import os
+import random
+import time
+import unicodedata
+
+import aiohttp
 import asyncpg
+import discord
+import humanize
+import requests
+from discord import DMChannel
+from discord.ext import commands, tasks
+from discord.ext.commands import (BucketType, MissingPermissions, command,
+                                  cooldown, has_permissions, when_mentioned_or)
+from dotenv import load_dotenv
+from PIL import Image, ImageDraw, ImageFilter, ImageFont
+
+import ext.helpers as helpers
 
 global embed_style1
 embed_style1 = discord.Embed()

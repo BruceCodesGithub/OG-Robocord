@@ -1,7 +1,9 @@
+import io
+import random
+
+import animec
 import discord
 from discord.ext import commands
-import io, random
-import animec
 
 
 class Fun(commands.Cog):

@@ -1,6 +1,6 @@
 import discord
-from discord.ext import commands
 from cogs.database import Database
+from discord.ext import commands
 
 
 class Tags(commands.Cog):
