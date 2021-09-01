@@ -7,7 +7,6 @@ from discord import DMChannel
 import requests, humanize, json, asyncpg
 import calendar, math, unicodedata, random, os, time, io
 import ext.helpers as helpers
-from PIL import Image, ImageDraw, ImageFont, ImageFilter
 from dotenv import load_dotenv
 import asyncpg
 
@@ -87,7 +86,7 @@ bot = commands.Bot(command_prefix="p!", description='The bot build with and for 
                   case_insensitive=True, embed_color=discord.Color.blurple(),
                   help_command=HelpCommand(), activity=discord.Activity(type=discord.ActivityType.competing, name="What's dpy's Best Fork?"), status=discord.Status.online)
 
-bot.load_extension('jishaku')
+
 bot.default_owner = 571638000661037056
 
 
@@ -221,7 +220,7 @@ async def ping(ctx):
         start = time.perf_counter()
         await message.edit(embed=embed)
 
-for i in ['database','tags']:
+for i in ['database','tags','jishaku']:
     bot.load_extension(i)
     
 bot.loop.run_until_complete(create_db_pool())
