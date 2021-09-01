@@ -84,9 +84,6 @@ class HelpCommand(commands.HelpCommand):
         embed.set_footer(text=self.get_ending_note())
         await self.get_destination().send(embed=embed)
 
-    # This makes it so it uses the function above
-    # Less work for us to do since they're both similar.
-    # If you want to make regular command help look different then override it
     send_command_help = send_group_help
 
 
@@ -95,7 +92,6 @@ bot = commands.Bot(command_prefix="p!", description='The bot build with and for 
                   help_command=HelpCommand(), activity=discord.Activity(type=discord.ActivityType.competing, name="What's dpy's Best Fork?"), status=discord.Status.online)
 
 bot.load_extension('jishaku')
-bot.load_extension('modules.fun')
 bot.default_owner = 571638000661037056
 
 
@@ -205,75 +201,8 @@ async def on_command_error(ctx, error):
             pass
         await helpers.log_command_error(ctx, exception, False)
 
-# @bot.event
-# async def on_command_error(ctx, error):
-#   if isinstance(error, commands.CommandOnCooldown):
-#     await ctx.send(embed=discord.Embed(description=f'Command is still in cooldown. Try again after {humanize.precisedelta(time)}'))
-
-#   elif isinstance(error, commands.Notowner):
-#     await ctx.send(embed=discord.Embed(description=f'This command is only for the owner of the bot, and can only be used by him.'))
-
-#   elif isinstance(error, commands.MissingAnyRole):
-#     await ctx.send(embed=discord.Embed(description=f'You are missing the required roles to run this command. - '))
 
 bot.launch_time = datetime.datetime.utcnow()
-
-
-class Misc(commands.Cog):
-    @commands.command(pass_context=True)
-    async def cats(self, ctx):
-     embed = discord.Embed(title="Cute Cats Pictures :)", description="")
-     embed.set_footer(text="From the subreddit r/cats", icon_url="https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/google/274/cat-face_1f431.png")
-
-     async with aiohttp.ClientSession() as cs:
-        async with cs.get('https://www.reddit.com/r/cats/new.json?sort=hot') as r:
-            res = await r.json()
-            embed.set_image(url=res['data']['children'] [random.randint(0, 25)]['data']['url'])
-            await ctx.send(embed=embed) 
-    @commands.command()
-    async def dogs(self, ctx):
-     embed = discord.Embed(title="Cute Dog Pictures :)", description="")
-     embed.set_footer(text="From the subreddit r/DogPics", icon_url="https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/google/274/dog_1f415.png")
-
-     async with aiohttp.ClientSession() as cs:
-        async with cs.get('https://www.reddit.com/r/DogPics/new.json?sort=hot') as r:
-            res = await r.json()
-            embed.set_image(url=res['data']['children'] [random.randint(0, 25)]['data']['url'])
-            await ctx.send(embed=embed)
-
-    @commands.command()
-    async def goats(self, ctx):
-     embed = discord.Embed(title="Cute Goat Pictures :)", description="Twiggy wanted this")
-     embed.set_footer(text="From the subreddit r/goatpics")
-
-     async with aiohttp.ClientSession() as cs:
-        async with cs.get('https://www.reddit.com/r/goatpics/new.json?sort=hot') as r:
-            res = await r.json()
-            embed.set_image(url=res['data']['children'] [random.randint(0, 25)]['data']['url'])
-            await ctx.send(embed=embed) 
-
-    @commands.command()
-    async def cute(self, ctx):
-     embed = discord.Embed(title="Cute Pictures ᵔᴥᵔ", description="Awww ᵔᴥᵔ")
-     embed.set_footer(text="From the subreddit r/cute")
-
-     async with aiohttp.ClientSession() as cs:
-        async with cs.get('https://www.reddit.com/r/cute/new.json?sort=hot') as r:
-            res = await r.json()
-            embed.set_image(url=res['data']['children'] [random.randint(0, 25)]['data']['url'])
-            await ctx.send(embed=embed)
-
-
-bot.add_cog(Misc(bot))
-
-
-# @bot.command()
-# async def timenow(ctx):
-  
-#   d = datetime.utcnow()
-#   unixtime = calendar.timegm(d.utctimetuple())
-#   await ctx.send(f"<t:{unixtime}:t>")
-
 
 @bot.command()
 async def ping(ctx):
@@ -296,7 +225,7 @@ async def ping(ctx):
         start = time.perf_counter()
         await message.edit(embed=embed)
 
-
+for 
 bot.loop.run_until_complete(create_db_pool())
 # keep_alive()
 bot.run(os.getenv("TOKEN"))
