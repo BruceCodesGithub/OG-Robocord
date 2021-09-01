@@ -51,8 +51,12 @@ class Database(commands.Cog):
                 return "You dont own the tag"
 
     async def data(self,n):
-        e = await self.bot.con.fetchrow('SELECT id,author FROM Tags WHERE name=$1',n)
-        return e
+        e = await self.bot.con.fetchrow('SELECT name FROM Tags WHERE name=$1',n)
+        if not e:
+            return "none found","none found"
+        else:
+            d = await self.bot.con.fetchrow('SELECT id,author FROM Tags WHERE name=$1',n)
+            return e
 
     @commands.Cog.listener()
     async def on_ready(self):
