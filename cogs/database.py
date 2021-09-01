@@ -52,9 +52,10 @@ class Database(commands.Cog):
 
     async def data(self,n):
         e = await self.bot.con.fetchrow('SELECT id,author FROM Tags WHERE name=$1',n)
-        i = e[0]
-        content = e[1]
-        return i,content
+        if e:
+            return e
+        else:
+            return "nothing found",'nothing found'
 
     @commands.Cog.listener()
     async def on_ready(self):
