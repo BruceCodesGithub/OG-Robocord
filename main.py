@@ -17,7 +17,7 @@ embed_style1 = discord.Embed()
 
 
 async def create_db_pool():
-    bot.con=await asyncpg.create_pool(database='pycord',user='<insert user here>',password='<insert pass here>')
+    bot.con=await asyncpg.create_pool(database='<insert db name here>',user='<insert user here>',password='<insert pass here>')
 
 
 class HelpCommand(commands.HelpCommand):
