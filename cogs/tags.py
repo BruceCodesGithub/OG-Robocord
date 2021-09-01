@@ -35,7 +35,10 @@ class Tags(commands.Cog):
         b = await self.db.data(name)
         embed = discord.Embed(title=name)
         embed.add_field(name="Id",value=b[0])
-        embed.add_field(name="Author",value=f'<@{b[1]}>')
+        if not b[0] == 'nothing found':
+            embed.add_field(name="Author",value=f'<@{b[1]}>')
+        else:
+            embed.add_field(name="Author",value=f'nothing found')
         await ctx.reply(embed=embed)
 
     
