@@ -12,9 +12,6 @@ from PIL import Image, ImageDraw, ImageFont, ImageFilter
 from dotenv import load_dotenv
 import asyncpg
 
-global embed_style1
-embed_style1 = discord.Embed()
-
 
 async def create_db_pool():
     bot.con=await asyncpg.create_pool(database='<insert db name here>',user='<insert user here>',password='<insert pass here>')
