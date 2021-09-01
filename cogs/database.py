@@ -24,13 +24,13 @@ class Database(commands.Cog):
         else:
             return e[0]
 
-    async def remove(self,n,auth):
+    async def remove(self,n,auth,allowed=False):
         e = await self.bot.con.fetchrow('SELECT content FROM Tags WHERE name=$1',n)
         if not e:
             return "No such tag found"
         else:
             authcheck = await self.bot.con.fetchrow("SELECT author FROM Tags WHERE name=$1",n)
-            if authcheck[0] == auth:
+            if authcheck[0] == auth or allowed:
                 a = e[0]  
                 await self.bot.con.execute("DELETE FROM Tags WHERE name=$1",n)
                 return "Succsfully Deleted"
@@ -56,6 +56,17 @@ class Database(commands.Cog):
             return e
         else:
             return "nothing found",'nothing found'
+
+    async def transfer(self,n,auth,auth2):
+        e = await self.bot.con.fetchrow('SELECT author FROM Tags WHERE name=$1',n)
+        if not e:
+            return "No such tags found"
+        else:
+            if e[0] == auth:
+                await self.bot.con.execute("UPDATE Tags SET author=$1 WHERE name=$2",auth2,n)
+                return "Succesfully transfered ownership of tags"
+            else:
+                return "You dont own the tag"
 
     @commands.Cog.listener()
     async def on_ready(self):
