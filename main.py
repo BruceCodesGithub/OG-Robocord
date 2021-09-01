@@ -1,4 +1,3 @@
-# from keep_alive import keep_alive
 import discord
 from discord.ext import commands, tasks
 from discord.ext.commands import when_mentioned_or, command, has_permissions, MissingPermissions, cooldown, BucketType
@@ -222,7 +221,8 @@ async def ping(ctx):
         start = time.perf_counter()
         await message.edit(embed=embed)
 
-for 
+for i in ['database','tags']:
+    bot.load_extension(i)
+    
 bot.loop.run_until_complete(create_db_pool())
-# keep_alive()
 bot.run(os.getenv("TOKEN"))
