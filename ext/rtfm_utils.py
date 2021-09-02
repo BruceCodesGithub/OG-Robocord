@@ -96,6 +96,7 @@ class SphinxObjectFileReader:
 
         return result
 
+
 def finder(text: str, collection: list, *, key=None, lazy=True):
     suggestions = []
     text = str(text)
@@ -116,4 +117,3 @@ def finder(text: str, collection: list, *, key=None, lazy=True):
         return (z for _, _, z in sorted(suggestions, key=sort_key))
     else:
         return [z for _, _, z in sorted(suggestions, key=sort_key)]
-

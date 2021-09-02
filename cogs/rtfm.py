@@ -55,7 +55,10 @@ class RTFM(commands.Cog):
                 [f"{index}. {value}" for index, value in list(self.targets.keys())]
             )
             return await ctx.reply(
-                embed=ctx.error(title="Invalid Documentation", description=f"Documentation {docs} is invalid. Must be one of \n{lis}")
+                embed=ctx.error(
+                    title="Invalid Documentation",
+                    description=f"Documentation {docs} is invalid. Must be one of \n{lis}",
+                )
             )
         if not term:
             return await ctx.reply(self.targets[target])
@@ -71,7 +74,9 @@ class RTFM(commands.Cog):
         )[:10]
 
         if not results:
-            return await ctx.reply(f"No results found when searching for {term} in {docs}")
+            return await ctx.reply(
+                f"No results found when searching for {term} in {docs}"
+            )
 
         await ctx.reply(
             embed=discord.Embed(
@@ -80,6 +85,7 @@ class RTFM(commands.Cog):
                 color=discord.Color.dark_theme(),
             )
         )
+
 
 def setup(bot):
     bot.add_cog(RTFM(bot))
