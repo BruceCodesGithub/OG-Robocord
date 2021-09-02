@@ -9,13 +9,27 @@ from discord.ext.commands import (
     BucketType,
 )
 import datetime
-import asyncio, aiohttp
+import io
+import json
+import math
+import os
+import random
+import time
+import unicodedata
+
+import aiohttp
+import asyncpg
+import discord
+import humanize
+import requests
 from discord import DMChannel
-import requests, humanize, json, asyncpg
+import requests, humanize, json
 import calendar, math, unicodedata, random, os, time, io
 import ext.helpers as helpers
 from dotenv import load_dotenv
-import asyncpg
+from PIL import Image, ImageDraw, ImageFilter, ImageFont
+
+import ext.helpers as helpers
 
 
 async def create_db_pool():
@@ -251,6 +265,7 @@ async def on_command_error(ctx, error):
 
 bot.launch_time = datetime.datetime.utcnow()
 
+
 class Misc(commands.Cog):
     @commands.command(pass_context=True)
     async def cats(self, ctx):
@@ -356,8 +371,9 @@ async def ping(ctx):
     start = time.perf_counter()
     await message.edit(embed=embed)
 
-for i in ['database','tags','jishaku']:
+
+for i in ["database", "tags", "jishaku"]:
     bot.load_extension(i)
-    
+load_dotenv()
 bot.loop.run_until_complete(create_db_pool())
 bot.run(os.getenv("TOKEN"))

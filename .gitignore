@@ -128,8 +128,13 @@ dmypy.json
 # Pyre type checker
 .pyre/
 
+<<<<<<< HEAD
 # local batch files
 *.bat
 
 # testings
 tests/
+=======
+# misc
+*.bat
+>>>>>>> c2d4e82878ea0fd64f4b9154b8929ac5f181246a
