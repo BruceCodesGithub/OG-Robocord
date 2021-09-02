@@ -1,7 +1,8 @@
-import discord
-from discord.ext import commands
 import warnings
+
+import discord
 import ext.rtfm_utils as rtfm
+from discord.ext import commands
 
 
 class RTFM(commands.Cog):
@@ -70,8 +71,7 @@ class RTFM(commands.Cog):
         )[:10]
 
         if not results:
-                f"No results found when searching for {term} in {docs}"
-            )
+            return await ctx.reply(f"No results found when searching for {term} in {docs}")
 
         await ctx.reply(
             embed=discord.Embed(
@@ -80,3 +80,6 @@ class RTFM(commands.Cog):
                 color=discord.Color.dark_theme(),
             )
         )
+
+def setup(bot):
+    bot.add_cog(RTFM(bot))

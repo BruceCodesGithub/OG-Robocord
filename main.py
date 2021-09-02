@@ -1,13 +1,5 @@
-import discord
-from discord.ext import commands, tasks
-from discord.ext.commands import (
-    when_mentioned_or,
-    command,
-    has_permissions,
-    MissingPermissions,
-    cooldown,
-    BucketType,
-)
+import asyncio
+import calendar
 import datetime
 import io
 import json
@@ -18,20 +10,18 @@ import time
 import unicodedata
 
 import aiohttp
-import asyncio
 import asyncpg
 import discord
 import humanize
 import requests
 from discord import DMChannel
-import requests, humanize, json
-import calendar, math, unicodedata, random, os, time, io
-import ext.helpers as helpers
+from discord.ext import commands, tasks
+from discord.ext.commands import (BucketType, MissingPermissions, command,
+                                  cooldown, has_permissions, when_mentioned_or)
 from dotenv import load_dotenv
 from PIL import Image, ImageDraw, ImageFilter, ImageFont
 
 import ext.helpers as helpers
-
 
 async def create_db_pool():
     bot.con = await asyncpg.create_pool(
@@ -125,7 +115,7 @@ bot = commands.Bot(
 )
 
 bot.load_extension("jishaku")
-bot.load_extension("modules.fun")
+# bot.load_extension("cogs.fun")
 bot.load_extension("cogs.rtfm")
 bot.default_owner = 571638000661037056
 
@@ -167,6 +157,7 @@ async def prefix(bot_, message):
 @bot.event
 async def on_ready():
     print("{} is Ready and Online!".format(bot.user))
+    print(f"Default Prefixes: {', '.join(bot.default_prefixes)}")
 
 
 @bot.event
