@@ -1,22 +1,44 @@
-import discord
-from discord.ext import commands, tasks
-from discord.ext.commands import when_mentioned_or, command, has_permissions, MissingPermissions, cooldown, BucketType
+import asyncio
+import calendar
 import datetime
-import asyncio, aiohttp
-from discord import DMChannel
-import requests, humanize, json, asyncpg
-import calendar, math, unicodedata, random, os, time, io
-import ext.helpers as helpers
-from dotenv import load_dotenv
+import io
+import json
+import math
+import os
+import random
+import time
+import unicodedata
+from pathlib import Path
+
+import aiohttp
 import asyncpg
+import discord
+import humanize
+import requests
+from discord import DMChannel
+from discord.ext import commands, tasks
+from discord.ext.commands import (BucketType, MissingPermissions, command,
+                                  cooldown, has_permissions, when_mentioned_or)
+from dotenv import load_dotenv
+
+import ext.helpers as helpers
 
 
 async def create_db_pool():
     bot.con=await asyncpg.create_pool(database='<insert db name here>',user='<insert user here>',password='<insert pass here>')
 
+def get_extensions():
+    extensions = []   
+    extensions.append("jishaku")
+
+    for file in Path("cogs").glob("**/*.py"):
+        if "!" in file.name or "DEV" in file.name:
+            continue
+        extensions.append(str(file).replace("/", ".").replace(".py", ""))
+    return extensions
+
 
 class HelpCommand(commands.HelpCommand):
-  
     def get_ending_note(self):
         return 'Use {0}{1} [command] for more info on a command.'.format(
             self.clean_prefix, self.invoked_with)
@@ -116,9 +138,11 @@ bot.blacklisted = init_data['blacklisted']
 bot.disabled = init_data['disabled']
 bot.active_cogs = init_data['cogs']
 bot.server_cache = {}
+
 async def prefix(bot_, message):
     return commands.when_mentioned_or(*(await helpers.prefix(bot_, message)))(
         bot_, message)
+
 @bot.event
 async def on_ready():
     print("{} is Ready and Online!".format(bot.user))
@@ -138,9 +162,9 @@ async def on_command_error(ctx, error):
                 commands.DisabledCommand, commands.CommandOnCooldown,
                 commands.MissingPermissions, commands.MaxConcurrencyReached))):
             try:
-              await ctx.reinvoke()
+                await ctx.reinvoke()
             except discord.ext.commands.CommandError as e:
-              pass
+                pass
             else:
                 return
 
@@ -220,8 +244,9 @@ async def ping(ctx):
         start = time.perf_counter()
         await message.edit(embed=embed)
 
-for i in ['database','tags','jishaku']:
-    bot.load_extension(i)
+
+for ext in get_extensions():
+    bot.load_extension(ext)
     
 bot.loop.run_until_complete(create_db_pool())
 bot.run(os.getenv("TOKEN"))

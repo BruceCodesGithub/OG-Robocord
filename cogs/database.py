@@ -70,8 +70,8 @@ class Database(commands.Cog):
 
     @commands.Cog.listener()
     async def on_ready(self):
-         await self.create_db()
-         print("DB is gud")
+        await self.create_db()
+        print("DB is gud")
 
 def setup(bot):
     bot.add_cog(Database(bot))
