@@ -18,6 +18,7 @@ import time
 import unicodedata
 
 import aiohttp
+import asyncio
 import asyncpg
 import discord
 import humanize
@@ -125,6 +126,7 @@ bot = commands.Bot(
 
 bot.load_extension("jishaku")
 bot.load_extension("modules.fun")
+bot.load_extension("cogs.rtfm")
 bot.default_owner = 571638000661037056
 
 
@@ -153,6 +155,7 @@ bot.blacklisted = init_data["blacklisted"]
 bot.disabled = init_data["disabled"]
 bot.active_cogs = init_data["cogs"]
 bot.server_cache = {}
+bot.session = aiohttp.ClientSession()
 
 
 async def prefix(bot_, message):
@@ -275,7 +278,7 @@ class Misc(commands.Cog):
             icon_url="https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/google/274/cat-face_1f431.png",
         )
 
-        async with aiohttp.ClientSession() as cs:
+        async with bot.session as cs:
             async with cs.get("https://www.reddit.com/r/cats/new.json?sort=hot") as r:
                 res = await r.json()
                 embed.set_image(
@@ -291,7 +294,7 @@ class Misc(commands.Cog):
             icon_url="https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/google/274/dog_1f415.png",
         )
 
-        async with aiohttp.ClientSession() as cs:
+        async with bot.session as cs:
             async with cs.get(
                 "https://www.reddit.com/r/DogPics/new.json?sort=hot"
             ) as r:
@@ -308,7 +311,7 @@ class Misc(commands.Cog):
         )
         embed.set_footer(text="From the subreddit r/goatpics")
 
-        async with aiohttp.ClientSession() as cs:
+        async with bot.session as cs:
             async with cs.get(
                 "https://www.reddit.com/r/goatpics/new.json?sort=hot"
             ) as r:
@@ -323,7 +326,7 @@ class Misc(commands.Cog):
         embed = discord.Embed(title="Cute Pictures ᵔᴥᵔ", description="Awww ᵔᴥᵔ")
         embed.set_footer(text="From the subreddit r/cute")
 
-        async with aiohttp.ClientSession() as cs:
+        async with bot.session as cs:
             async with cs.get("https://www.reddit.com/r/cute/new.json?sort=hot") as r:
                 res = await r.json()
                 embed.set_image(
@@ -333,14 +336,6 @@ class Misc(commands.Cog):
 
 
 bot.add_cog(Misc(bot))
-
-
-# @bot.command()
-# async def timenow(ctx):
-
-#   d = datetime.utcnow()
-#   unixtime = calendar.timegm(d.utctimetuple())
-#   await ctx.send(f"<t:{unixtime}:t>")
 
 
 @bot.command()
@@ -372,8 +367,8 @@ async def ping(ctx):
     await message.edit(embed=embed)
 
 
-for i in ["database", "tags", "jishaku"]:
-    bot.load_extension(i)
+# for i in ["database", "tags", "jishaku"]: already done in line 127?
+#     bot.load_extension(i)
 load_dotenv()
 bot.loop.run_until_complete(create_db_pool())
 bot.run(os.getenv("TOKEN"))

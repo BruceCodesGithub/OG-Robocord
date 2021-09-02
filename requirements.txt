@@ -6,3 +6,4 @@ asyncio
 aiohttp
 humanize
 requests
+jishaku

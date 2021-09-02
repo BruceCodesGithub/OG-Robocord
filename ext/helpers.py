@@ -25,6 +25,9 @@ class Bot(commands.Bot):
         if hasattr(self, "wavelink"):
             if not self.wavelink.session.closed:
                 await asyncio.wait_for(self.wavelink.session.close(), timeout=5)
+        if hasattr(self, "session"):
+            if not self.session.closed:
+                await self.session.close()
         await super().logout(*args, **kwargs)
 
 
