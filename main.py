@@ -148,11 +148,6 @@ bot.server_cache = {}
 bot.session = aiohttp.ClientSession()
 
 
-# async def prefix(bot_, message):
-#     return commands.when_mentioned_or(*(await helpers.prefix(bot_, message)))( 
-#         bot_, message
-#     )
-# yall set the prefix manually to "p!" :bruh:
 
 @bot.event
 async def on_ready():
@@ -258,76 +253,6 @@ async def on_command_error(ctx, error):
 
 
 bot.launch_time = datetime.datetime.utcnow()
-
-
-class Misc(commands.Cog):
-    @commands.command(pass_context=True)
-    async def cats(self, ctx):
-        embed = discord.Embed(title="Cute Cats Pictures :)", description="")
-        embed.set_footer(
-            text="From the subreddit r/cats",
-            icon_url="https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/google/274/cat-face_1f431.png",
-        )
-
-        async with bot.session as cs:
-            async with cs.get("https://www.reddit.com/r/cats/new.json?sort=hot") as r:
-                res = await r.json()
-                embed.set_image(
-                    url=res["data"]["children"][random.randint(0, 25)]["data"]["url"]
-                )
-                await ctx.send(embed=embed)
-
-    @commands.command()
-    async def dogs(self, ctx):
-        embed = discord.Embed(title="Cute Dog Pictures :)", description="")
-        embed.set_footer(
-            text="From the subreddit r/DogPics",
-            icon_url="https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/google/274/dog_1f415.png",
-        )
-
-        async with bot.session as cs:
-            async with cs.get(
-                "https://www.reddit.com/r/DogPics/new.json?sort=hot"
-            ) as r:
-                res = await r.json()
-                embed.set_image(
-                    url=res["data"]["children"][random.randint(0, 25)]["data"]["url"]
-                )
-                await ctx.send(embed=embed)
-
-    @commands.command()
-    async def goats(self, ctx):
-        embed = discord.Embed(
-            title="Cute Goat Pictures :)", description="Twiggy wanted this"
-        )
-        embed.set_footer(text="From the subreddit r/goatpics")
-
-        async with bot.session as cs:
-            async with cs.get(
-                "https://www.reddit.com/r/goatpics/new.json?sort=hot"
-            ) as r:
-                res = await r.json()
-                embed.set_image(
-                    url=res["data"]["children"][random.randint(0, 25)]["data"]["url"]
-                )
-                await ctx.send(embed=embed)
-
-    @commands.command()
-    async def cute(self, ctx):
-        embed = discord.Embed(title="Cute Pictures ᵔᴥᵔ", description="Awww ᵔᴥᵔ")
-        embed.set_footer(text="From the subreddit r/cute")
-
-        async with bot.session as cs:
-            async with cs.get("https://www.reddit.com/r/cute/new.json?sort=hot") as r:
-                res = await r.json()
-                embed.set_image(
-                    url=res["data"]["children"][random.randint(0, 25)]["data"]["url"]
-                )
-                await ctx.send(embed=embed)
-
-
-bot.add_cog(Misc(bot))
-
 
 @bot.command()
 async def ping(ctx):
