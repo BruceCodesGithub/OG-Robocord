@@ -332,14 +332,12 @@ async def mention(ctx, member: discord.Member):  # user commands return the memb
 async def show_id(ctx, message: discord.Message):  # message commands return the message
     await ctx.respond(f"{ctx.author.name}, here's the message id: {message.id}!")
 
-bot.run("TOKEN")
 ```""", ephemeral=isprivate)
 
 
 for i in ['jishaku', 'cogs.rtfm']:
     bot.load_extension(i)
     
-bot.run(os.getenv("TOKEN"))
 load_dotenv()
 bot.loop.run_until_complete(create_db_pool())
 bot.run(os.getenv("TOKEN"))
