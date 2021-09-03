@@ -27,6 +27,16 @@ async def create_db_pool():
         database="pycord", user="<insert user here>", password="<insert pass here>"
     )
 
+def get_extensions():
+    extensions = []   
+    extensions.append("jishaku")
+
+    for file in Path("cogs").glob("**/*.py"):
+        if "!" in file.name or "DEV" in file.name:
+            continue
+        extensions.append(str(file).replace("/", ".").replace(".py", ""))
+    return extensions   
+    
 
 class HelpCommand(commands.HelpCommand):
     def get_ending_note(self):
@@ -113,8 +123,7 @@ bot = commands.Bot(
     status=discord.Status.online,
 )
 
-bot.load_extension("jishaku")
-bot.load_extension("cogs.rtfm")
+
 bot.default_owner = 571638000661037056
 
 
@@ -280,9 +289,9 @@ async def ping(ctx):
     start = time.perf_counter()
     await message.edit(embed=embed)
 
-
-# for i in ["database", "tags", "jishaku"]: already done in line 127?
-#     bot.load_extension(i)
+for ext in get_extensions():
+    bot.load_extension(ext)
+    
 load_dotenv()
 bot.loop.run_until_complete(create_db_pool())
 bot.run(os.getenv("TOKEN"))
