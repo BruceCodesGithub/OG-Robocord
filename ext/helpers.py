@@ -5,7 +5,7 @@ import random
 import sys
 import traceback
 
-import asyncpg
+# import asyncpg
 import discord
 from discord.ext import commands
 
@@ -143,94 +143,6 @@ def storage(bot, key=None, value=None, method=None, override=False):
     with open("./storage/config.json", "w") as f:
         json.dump(data, f, indent=4)
     return data
-
-
-async def prepare(bot, guild=None):
-    try:
-        connection = await bot.pools.config.acquire()
-        await bot.pools.config.release(connection)
-    except asyncpg.exceptions._base.InterfaceError:
-        try:
-            bot.pools.config = await asyncio.wait_for(
-                asyncpg.create_pool(database="codingbot_db", init=init_connection),
-                timeout=5,
-            )
-            connection = await bot.pools.config.acquire()
-            await bot.pools.config.release(connection)
-        except (
-            OSError,
-            asyncpg.exceptions._base.InterfaceError,
-            asyncio.exceptions.TimeoutError,
-        ):
-            if guild:
-                bot.server_cache[guild.id] = bot.server_cache.get(
-                    guild.id, {"prefixes": bot.default_prefixes.copy(), "commands": {}}
-                )
-            return
-    async with bot.pools.config.acquire() as connection:
-        if guild:
-            await connection.execute(
-                """
-                CREATE TABLE IF NOT EXISTS serverconf (
-                    id bigint,
-                    commands json,
-                    prefixes text[]
-                );
-            """
-            )
-            data = await connection.fetchrow(
-                "SELECT * FROM serverconf WHERE id = $1", guild.id
-            )
-            bot.server_cache[guild.id] = bot.server_cache.get(
-                guild.id, {"prefixes": bot.default_prefixes.copy(), "commands": {}}
-            )
-            if data:
-                if isinstance(data["prefixes"], list):
-                    bot.server_cache[guild.id]["prefixes"] = data["prefixes"]
-                if isinstance(data["commands"], dict):
-                    bot.server_cache[guild.id]["commands"] = data["commands"]
-
-# both above and below functions not currently used ^^^^^^^^^ VVV
-
-async def is_disabled(ctx):
-    if not ctx.guild:
-        return False
-    try:
-        data = ctx.bot.server_cache[ctx.guild.id].copy()
-    except KeyError:
-        await prepare(ctx.bot, ctx.guild)
-        try:
-            data = ctx.bot.server_cache[ctx.guild.id].copy()
-        except KeyError:
-            data = {}
-    ids_to_check = [ctx.guild.id, ctx.channel.id, ctx.author.id]
-    ids_to_check += [r.id for r in ctx.author.roles]
-    for id_ in ids_to_check:
-        data[int(id_)] = data.get(int(id_), [])
-        if True in data[int(id_)] or ctx.command.qualified_name in data[int(id_)]:
-            return True
-    return False
-
-
-# async def prefix(bot, message):
-#     return_prefixes = bot.default_prefixes.copy()
-#     if not message.guild:
-#         return_prefixes.append("")
-#     else:
-#         try:
-#             data = bot.server_cache[message.guild.id]["prefixes"]
-#         except KeyError:
-#             try:
-#                 bot.server_cache[message.guild.id] = bot.server_cache.get(
-#                     message.guild.id, {"prefixes": return_prefixes, "commands": {}}
-#                 )
-#                 bot.loop.create_task(prepare(bot, message.guild))
-#                 data = bot.server_cache[message.guild.id]["prefixes"]
-#             except KeyError:
-#                 data = bot.default_prefixes
-#         return_prefixes = data or return_prefixes
-#     return return_prefixes
-# not used since prefix is manually set to p! didnt remove in case of future use
 
 
 async def log_command_error(ctx, error, handled):

@@ -1,4 +1,4 @@
-py-cord
+git+https://github.com/Pycord-Development/pycord
 python-dotenv
 asyncpg
 asyncio
@@ -6,3 +6,4 @@ aiohttp
 humanize
 requests
 jishaku
+# disputils # installs discord.py bruh
