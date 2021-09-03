@@ -1,7 +1,7 @@
 # this file contains a bunch of data to make the code cleaner and less spammy. Many variables, lists and dicts are dfined here.
 
 data = {
-	"slash-commands": """**What are Slash Commands?**
+    "slash-commands": """**What are Slash Commands?**
 When you type `/`, you can see a list of commands a bot can use. These are called Slash Commands, and can be invoked with a Slash.
 
 **Can I use them with pycord?**
@@ -30,7 +30,7 @@ async def hello(
 
 bot.run("TOKEN")
 ```""",
-	"context-menu-commands": """**What are user commands and message commands?**
+    "context-menu-commands": """**What are user commands and message commands?**
 When you right click a message, you may see a option called "Apps". Hover over it and you can see commands a bot can run with that message. These are called message commands.
 When you right click a message in the user list, you can once again see an option called "Apps". Hover over it and you can see commands a bot can run with that message. These are called user commands.
 
@@ -58,5 +58,5 @@ async def show_id(ctx, message: discord.Message):  # message commands return the
     await ctx.respond(f"{ctx.author.name}, here's the message id: {message.id}!")
 
 bot.run("TOKEN")
-```"""
+```""",
 }

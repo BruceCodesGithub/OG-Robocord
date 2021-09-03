@@ -87,9 +87,10 @@ class SphinxObjectFileReader:
             key = name if dispname == "-" else dispname
             prefix = f"{subdirective}:" if domain == "std" else ""
 
-            if (
-                projname == "discord.py"
-            ):  # this changes to pycord in the master branch docs
+            if projname in [
+                "discord.py",
+                "pycord",
+            ]:  # this changes to pycord in the master branch docs
                 key = key.replace("discord.ext.commands.", "").replace("discord.", "")
 
             result[f"{prefix}{key}"] = os.path.join(url, location)

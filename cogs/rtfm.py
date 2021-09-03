@@ -13,11 +13,13 @@ class RTFM(commands.Cog):
         self.targets = {
             "python": "https://docs.python.org/3",
             "pycord": "https://pycord.readthedocs.io/en/latest",
-            "master": "https://pycord.readthedocs.io/en/master"
+            "master": "https://pycord.readthedocs.io/en/master",
         }
         self.aliases = {
             ("py", "py3", "python3", "python"): "python",
-            ("pycord", "py-cord"): "pycord",
+            ("pycord", "pyc", "py-cord"): "pycord",
+            ("master", "pycord-master", "pyc-master", "py-cord-master"): "master",
+            # too many aliases? idk pls change this before using
         }
         self.cache = {}
 

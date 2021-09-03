@@ -10,33 +10,43 @@ import time
 import unicodedata
 
 import aiohttp
+
 import asyncpg
 import discord
 import humanize
 import requests
 from discord import DMChannel
 from discord.ext import commands, tasks
-from discord.ext.commands import (BucketType, MissingPermissions, command,
-                                  cooldown, has_permissions, when_mentioned_or)
+from discord.app import Option
+from discord.ext.commands import (
+    BucketType,
+    MissingPermissions,
+    command,
+    cooldown,
+    has_permissions,
+    when_mentioned_or,
+)
 from dotenv import load_dotenv
 from bot_data import *
 import ext.helpers as helpers
+from pathlib import Path
 
 async def create_db_pool():
     bot.con = await asyncpg.create_pool(
         database="pycord", user="<insert user here>", password="<insert pass here>"
     )
 
+
 def get_extensions():
-    extensions = []   
+    extensions = []
     extensions.append("jishaku")
 
     for file in Path("cogs").glob("**/*.py"):
         if "!" in file.name or "DEV" in file.name:
             continue
         extensions.append(str(file).replace("/", ".").replace(".py", ""))
-    return extensions   
-    
+    return extensions
+
 
 class HelpCommand(commands.HelpCommand):
     def get_ending_note(self):
@@ -154,12 +164,9 @@ bot.active_cogs = init_data["cogs"]
 bot.server_cache = {}
 
 
-
-
 @bot.event
 async def on_ready():
     print("{} is Ready and Online!".format(bot.user))
-
 
 
 @bot.event
@@ -261,6 +268,7 @@ async def on_command_error(ctx, error):
 
 bot.launch_time = datetime.datetime.utcnow()
 
+
 @bot.command()
 async def ping(ctx):
     loading = "<:thinkCat:853565931838242816>"
@@ -290,30 +298,52 @@ async def ping(ctx):
     await message.edit(embed=embed)
 
 
-@bot.slash_command(guild_ids=[881207955029110855, 869782707226439720], description="Change the slowmode of a channel.")
-@commands.has_any_role(882105157536591932, 881407111211384902, 881411529415729173, 881223795501846558)
-async def setdelay(ctx, seconds: Option(int,"Slowmode time in seconds", required=True)):  
-      await ctx.channel.edit(slowmode_delay=seconds)
-      await ctx.respond(f"Set the slowmode delay in this channel to {seconds} seconds!")
+@bot.slash_command(
+    guild_ids=[881207955029110855, 869782707226439720],
+    description="Change the slowmode of a channel.",
+)
+@commands.has_any_role(
+    882105157536591932, 881407111211384902, 881411529415729173, 881223795501846558
+)
+async def setdelay(
+    ctx, seconds: Option(int, "Slowmode time in seconds", required=True)
+):
+    await ctx.channel.edit(slowmode_delay=seconds)
+    await ctx.respond(f"Set the slowmode delay in this channel to {seconds} seconds!")
 
-@bot.slash_command(guild_ids=[881207955029110855, 869782707226439720], description="Frequently Asked Questions about pycord")
+
+@bot.slash_command(
+    guild_ids=[881207955029110855, 869782707226439720],
+    description="Frequently Asked Questions about pycord",
+)
 async def faq(
     ctx,
-    question: Option(str, "Choose your question", choices=["How to create Slash Commands", "How to create Context Menu Commands"]),
-    display: Option(str, "Should this message be private or displayed to everyone?", choices=["Ephemeral", "Displayed"], default="Ephemeral", required=False)):
-  if display == "Ephemeral":
-    isprivate = True
-  else:
-    isprivate = False
-  if question == "How to create Slash Commands":
-      await ctx.send(f"{data['slash-commands']}", ephemeral=isprivate)
-  elif question == "How to create Context Menu Commands":
-    await ctx.send(f"{data['context-menu-commands']}", ephemeral=isprivate)
+    question: Option(
+        str,
+        "Choose your question",
+        choices=["How to create Slash Commands", "How to create Context Menu Commands"],
+    ),
+    display: Option(
+        str,
+        "Should this message be private or displayed to everyone?",
+        choices=["Ephemeral", "Displayed"],
+        default="Ephemeral",
+        required=False,
+    ),
+):
+    if display == "Ephemeral":
+        isprivate = True
+    else:
+        isprivate = False
+    if question == "How to create Slash Commands":
+        await ctx.send(f"{data['slash-commands']}", ephemeral=isprivate)
+    elif question == "How to create Context Menu Commands":
+        await ctx.send(f"{data['context-menu-commands']}", ephemeral=isprivate)
 
-    
+
 for ext in get_extensions():
     bot.load_extension(ext)
-    
+
 load_dotenv()
 bot.loop.run_until_complete(create_db_pool())
 bot.run(os.getenv("TOKEN"))
