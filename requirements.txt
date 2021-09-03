@@ -1,7 +1,6 @@
 py-cord
 python-dotenv
 asyncpg
-animec
 asyncio
 aiohttp
 humanize
