@@ -190,6 +190,7 @@ async def prepare(bot, guild=None):
                 if isinstance(data["commands"], dict):
                     bot.server_cache[guild.id]["commands"] = data["commands"]
 
+# both above and below functions not currently used ^^^^^^^^^ VVV
 
 async def is_disabled(ctx):
     if not ctx.guild:
@@ -211,24 +212,25 @@ async def is_disabled(ctx):
     return False
 
 
-async def prefix(bot, message):
-    return_prefixes = bot.default_prefixes.copy()
-    if not message.guild:
-        return_prefixes.append("")
-    else:
-        try:
-            data = bot.server_cache[message.guild.id]["prefixes"]
-        except KeyError:
-            try:
-                bot.server_cache[message.guild.id] = bot.server_cache.get(
-                    message.guild.id, {"prefixes": return_prefixes, "commands": {}}
-                )
-                bot.loop.create_task(prepare(bot, message.guild))
-                data = bot.server_cache[message.guild.id]["prefixes"]
-            except KeyError:
-                data = bot.default_prefixes
-        return_prefixes = data or return_prefixes
-    return return_prefixes
+# async def prefix(bot, message):
+#     return_prefixes = bot.default_prefixes.copy()
+#     if not message.guild:
+#         return_prefixes.append("")
+#     else:
+#         try:
+#             data = bot.server_cache[message.guild.id]["prefixes"]
+#         except KeyError:
+#             try:
+#                 bot.server_cache[message.guild.id] = bot.server_cache.get(
+#                     message.guild.id, {"prefixes": return_prefixes, "commands": {}}
+#                 )
+#                 bot.loop.create_task(prepare(bot, message.guild))
+#                 data = bot.server_cache[message.guild.id]["prefixes"]
+#             except KeyError:
+#                 data = bot.default_prefixes
+#         return_prefixes = data or return_prefixes
+#     return return_prefixes
+# not used since prefix is manually set to p! didnt remove in case of future use
 
 
 async def log_command_error(ctx, error, handled):

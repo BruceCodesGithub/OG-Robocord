@@ -148,11 +148,11 @@ bot.server_cache = {}
 bot.session = aiohttp.ClientSession()
 
 
-async def prefix(bot_, message):
-    return commands.when_mentioned_or(*(await helpers.prefix(bot_, message)))(
-        bot_, message
-    )
-
+# async def prefix(bot_, message):
+#     return commands.when_mentioned_or(*(await helpers.prefix(bot_, message)))( 
+#         bot_, message
+#     )
+# yall set the prefix manually to "p!" :bruh:
 
 @bot.event
 async def on_ready():

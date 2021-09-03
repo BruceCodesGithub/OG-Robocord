@@ -44,10 +44,10 @@ class RTFM(commands.Cog):
         Returns the top 10 best matches of documentation links for searching the given term in the given docs
         Returns the entire documentation link if no term given
         """
-        doc = doc.lower()
+        docs = docs.lower()
         target = None
         for aliases, target_name in self.aliases.items():
-            if doc in aliases:
+            if docs in aliases:
                 target = target_name
 
         if not target:
