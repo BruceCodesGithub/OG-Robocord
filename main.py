@@ -19,7 +19,6 @@ from discord.ext import commands, tasks
 from discord.ext.commands import (BucketType, MissingPermissions, command,
                                   cooldown, has_permissions, when_mentioned_or)
 from dotenv import load_dotenv
-from PIL import Image, ImageDraw, ImageFilter, ImageFont
 
 import ext.helpers as helpers
 
@@ -115,7 +114,6 @@ bot = commands.Bot(
 )
 
 bot.load_extension("jishaku")
-# bot.load_extension("cogs.fun")
 bot.load_extension("cogs.rtfm")
 bot.default_owner = 571638000661037056
 
@@ -145,14 +143,14 @@ bot.blacklisted = init_data["blacklisted"]
 bot.disabled = init_data["disabled"]
 bot.active_cogs = init_data["cogs"]
 bot.server_cache = {}
-bot.session = aiohttp.ClientSession()
+
 
 
 
 @bot.event
 async def on_ready():
     print("{} is Ready and Online!".format(bot.user))
-    print(f"Default Prefixes: {', '.join(bot.default_prefixes)}")
+
 
 
 @bot.event
