@@ -134,39 +134,15 @@ bot = commands.Bot(
 )
 
 
-bot.default_owner = 571638000661037056
-
-
-@bot.event
-async def on_invite_create(invite):
-    await bot.tracker.update_invite_cache(invite)
-
-
-@bot.event
-async def on_invite_delete(invite):
-    await bot.tracker.remove_invite_cache(invite)
-
 
 os.environ["JISHAKU_NO_UNDERSCORE"] = "True"
 os.environ["JISHAKU_RETAIN"] = "True"
 
 
-init_data = helpers.storage(bot)
-
-bot.helpers = helpers
-bot.default_prefixes = ["p!"]
-bot.server_cache = {}
-bot.owner_id = 571638000661037056
-bot.owner_ids = init_data["owners"]
-bot.blacklisted = init_data["blacklisted"]
-bot.disabled = init_data["disabled"]
-bot.active_cogs = init_data["cogs"]
-bot.server_cache = {}
-
 
 @bot.event
 async def on_ready():
-    print("{} is Ready and Online!".format(bot.user))
+    print(f"{bot.user} is Ready and Online!")
 
 
 @bot.event
