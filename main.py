@@ -274,47 +274,188 @@ async def ping(ctx):
     await message.edit(embed=embed)
 
 
-@bot.slash_command(
-    guild_ids=[881207955029110855, 869782707226439720],
-    description="Change the slowmode of a channel.",
-)
-@commands.has_any_role(
-    882105157536591932, 881407111211384902, 881411529415729173, 881223795501846558
-)
-async def setdelay(
-    ctx, seconds: Option(int, "Slowmode time in seconds", required=True)
-):
-    await ctx.channel.edit(slowmode_delay=seconds)
-    await ctx.respond(f"Set the slowmode delay in this channel to {seconds} seconds!")
-
-
-@bot.slash_command(
-    guild_ids=[881207955029110855, 869782707226439720],
-    description="Frequently Asked Questions about pycord",
-)
+@bot.slash_command(guild_ids=[881207955029110855, 869782707226439720], description="Frequently Asked Questions about pycord")
 async def faq(
     ctx,
-    question: Option(
-        str,
-        "Choose your question",
-        choices=["How to create Slash Commands", "How to create Context Menu Commands"],
-    ),
-    display: Option(
-        str,
-        "Should this message be private or displayed to everyone?",
-        choices=["Ephemeral", "Displayed"],
-        default="Ephemeral",
-        required=False,
-    ),
-):
-    if display == "Ephemeral":
-        isprivate = True
-    else:
-        isprivate = False
-    if question == "How to create Slash Commands":
-        await ctx.send(f"{data['slash-commands']}", ephemeral=isprivate)
-    elif question == "How to create Context Menu Commands":
-        await ctx.send(f"{data['context-menu-commands']}", ephemeral=isprivate)
+    question: Option(str, "Choose your question", choices=["How to create Slash Commands", "How to create Context Menu Commands", "How to create buttons"]),
+    display: Option(str, "Should this message be private or displayed to everyone?", choices=["Ephemeral", "Displayed"], default="Ephemeral", required=False)):
+	isprivate = display == "Ephemeral"
+	if question == "How to create Slash Commands":
+		await ctx.send(f"{data['slash-commands']}", ephemeral=isprivate)
+	elif question == "How to create Context Menu Commands":
+		await ctx.send(f"{data['context-menu-commands']}", ephemeral=isprivate)
+	elif question == "How to create buttons":
+		await ctx.send(f"{data['buttons']}", ephemeral=isprivate)
+
+
+
+@bot.slash_command(guild_ids=[869782707226439720, 881207955029110855])
+async def issue(ctx, number:Option(int, "The issue number")):
+	link = f'https://github.com/Pycord-Development/pycord/issues/{number}'
+	response = requests.get(link)
+	if response.status_code == 200:
+		await ctx.send(f'{link}')
+	else:
+		await ctx.send(f'That issue doesn\'t seem to exist. If you think this is a mistake, contact {owner}.')
+
+@bot.slash_command(guild_ids=[869782707226439720, 881207955029110855])
+async def pr(ctx, number:Option(int, "The pr number")):
+	link = f'https://github.com/Pycord-Development/pycord/pull/{number}'
+	response = requests.get(link)
+	if response.status_code == 200:
+		await ctx.send(f'{link}')
+	else:
+		await ctx.send(f'That pull request doesn\'t seem to exist in the repo. If you think this is a mistake, contact {owner}.')
+
+
+
+@bot.user_command(name="Join Position", guild_ids=[881207955029110855, 869782707226439720])
+async def _joinpos(ctx, member:discord.Member):
+	all_members = list(ctx.guild.members)
+	all_members.sort(key=lambda m: m.joined_at)
+	def ord(n):
+		return str(n)+("th" if 4<=n%100<=20 else {1:"st",2:"nd",3:"rd"}.get(n%10, "th"))
+	embed = discord.Embed(title = "Member info", description = f'{member.mention} was the {ord(all_members.index(member) + 1)} person to join')
+	await ctx.send(embed=embed)
+
+MORSE_CODE_DICT = { 'A':'.-', 'B':'-...',
+                    'C':'-.-.', 'D':'-..', 'E':'.',
+                    'F':'..-.', 'G':'--.', 'H':'....',
+                    'I':'..', 'J':'.---', 'K':'-.-',
+                    'L':'.-..', 'M':'--', 'N':'-.',
+                    'O':'---', 'P':'.--.', 'Q':'--.-',
+                    'R':'.-.', 'S':'...', 'T':'-',
+                    'U':'..-', 'V':'...-', 'W':'.--',
+                    'X':'-..-', 'Y':'-.--', 'Z':'--..',
+                    '1':'.----', '2':'..---', '3':'...--',
+                    '4':'....-', '5':'.....', '6':'-....',
+                    '7':'--...', '8':'---..', '9':'----.',
+                    '0':'-----', ', ':'--..--', '.':'.-.-.-',
+                    '?':'..--..', '/':'-..-.', '-':'-....-',
+                    '(':'-.--.', ')':'-.--.-', '!':'-.-.--', ',': '--..--'}
+ 
+# Function to encrypt the string
+# according to the morse code chart
+def encrypt(message):
+    cipher = ''
+    for letter in message:
+        if letter != ' ':
+ 
+            # Looks up the dictionary and adds the
+            # correspponding morse code
+            # along with a space to separate
+            # morse codes for different characters
+            cipher += MORSE_CODE_DICT[letter] + ' '
+        else:
+            # 1 space indicates different characters
+            # and 2 indicates different words
+            cipher += ' '
+ 
+    return cipher
+ 
+# Function to decrypt the string
+# from morse to english
+def decrypt(message):
+ 
+    # extra space added at the end to access the
+    # last morse code
+    message += ' '
+ 
+    decipher = ''
+    citext = ''
+    for letter in message:
+ 
+        # checks for space
+        if (letter != ' '):
+ 
+            # counter to keep track of space
+            i = 0
+ 
+            # storing morse code of a single character
+            citext += letter
+ 
+        # in case of space
+        else:
+            # if i = 1 that indicates a new character
+            i += 1
+ 
+            # if i = 2 that indicates a new word
+            if i == 2 :
+ 
+                 # adding space to separate words
+                decipher += ' '
+            else:
+ 
+                # accessing the keys using their values (reverse of encryption)
+                decipher += list(MORSE_CODE_DICT.keys())[list(MORSE_CODE_DICT
+                .values()).index(citext)]
+                citext = ''
+ 
+    return decipher
+
+@bot.message_command(name="Encrypt to Morse", guild_ids=[869782707226439720, 881207955029110855])
+async def _tomorse(ctx, message:discord.message):
+	result = encrypt(message.content.upper())
+	await ctx.send(result)
+
+@bot.message_command(name="Decrypt Morse", guild_ids=[869782707226439720, 881207955029110855])
+async def _frommorse(ctx, message:discord.message):
+	result = decrypt(message.content)
+	await ctx.send(result)
+
+@bot.message_command(name="Decrypt binary", guild_ids=[869782707226439720, 881207955029110855])
+async def _frombinary(ctx, message:discord.message):
+	a_binary_string = message.content
+	binary_values = a_binary_string.split()
+
+	ascii_string = ""
+	for binary_value in binary_values:
+		an_integer = int(binary_value, 2)
+
+		ascii_character = chr(an_integer)
+
+		ascii_string += ascii_character
+	
+	await ctx.send(ascii_string)
+
+@bot.message_command(name="Encrypt to binary", guild_ids=[869782707226439720, 881207955029110855])
+async def _tobinary(ctx, message:discord.message):
+	a_string = message.content
+	a_byte_array = bytearray(a_string, "utf8")
+	byte_list = []
+
+	for byte in a_byte_array:
+		binary_representation = bin(byte)
+		byte_list.append(binary_representation)
+
+	await ctx.send(" ".join(byte_list))
+
+# @bot.slash_command(name="Decrypt from hex", guild_ids=[869782707226439720, 881207955029110855])
+# async def _fromhex(ctx, message:discord.message):
+# 	hex_string = message.content[2:]
+
+# 	bytes_object = bytes.fromhex(hex_string)
+
+
+# 	ascii_string = bytes_object.decode("ASCII")
+
+# 	await ctx.send(ascii_string)
+
+# @bot.message_command(name="Encrypt to hex", guild_ids=[869782707226439720, 881207955029110855])
+# async def _tohex(ctx, message:discord.message):
+# 	hex_string = message.content
+# 	an_integer = int(hex_string, 16)
+# 	hex_value = hex(an_integer)
+# 	await ctx.send(hex_value)
+
+@bot.user_command(name="Avatar",  guild_ids=[869782707226439720, 881207955029110855])
+async def _avatar(ctx, member:discord.Member):
+	embed = discord.Embed(title=f'{member}\'s avatar!', description=f"[Link]({member.avatar.url})", color=member.color)
+	try:
+		embed.set_image(url=member.avatar.url)
+	except AttributeError:
+		embed.set_image(url=member.display_avatar.url)
+	await ctx.send(embed=embed)
 
 
 for ext in get_extensions():
