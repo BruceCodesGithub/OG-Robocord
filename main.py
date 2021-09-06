@@ -10,10 +10,7 @@ import ext.helpers as helpers
 from pathlib import Path
 
 async def create_db_pool():
-    bot.con = await create_pool(
-        database="pycord", user="<insert user here>", password="<insert pass here>"
-    )
-
+    bot.con = await create_pool(database="pycord", user="<insert user here>", password="<insert pass here>")
 
 def get_extensions():
     extensions = []
@@ -23,7 +20,6 @@ def get_extensions():
             continue
         extensions.append(str(file).replace("/", ".").replace(".py", ""))
     return extensions
-
 
 class HelpCommand(commands.HelpCommand):
     def get_ending_note(self):
@@ -110,17 +106,12 @@ bot = commands.Bot(
     status=discord.Status.online,
 )
 
-
-
 os.environ["JISHAKU_NO_UNDERSCORE"] = "True"
 os.environ["JISHAKU_RETAIN"] = "True"
-
-
 
 @bot.event
 async def on_ready():
     print(f"{bot.user} is Ready and Online!")
-
 
 @bot.event
 async def on_command_error(ctx, error):
@@ -295,21 +286,7 @@ async def _joinpos(ctx, member:discord.Member):
 	embed = discord.Embed(title = "Member info", description = f'{member.mention} was the {ord(all_members.index(member) + 1)} person to join')
 	await ctx.send(embed=embed)
 
-MORSE_CODE_DICT = { 'A':'.-', 'B':'-...',
-                    'C':'-.-.', 'D':'-..', 'E':'.',
-                    'F':'..-.', 'G':'--.', 'H':'....',
-                    'I':'..', 'J':'.---', 'K':'-.-',
-                    'L':'.-..', 'M':'--', 'N':'-.',
-                    'O':'---', 'P':'.--.', 'Q':'--.-',
-                    'R':'.-.', 'S':'...', 'T':'-',
-                    'U':'..-', 'V':'...-', 'W':'.--',
-                    'X':'-..-', 'Y':'-.--', 'Z':'--..',
-                    '1':'.----', '2':'..---', '3':'...--',
-                    '4':'....-', '5':'.....', '6':'-....',
-                    '7':'--...', '8':'---..', '9':'----.',
-                    '0':'-----', ', ':'--..--', '.':'.-.-.-',
-                    '?':'..--..', '/':'-..-.', '-':'-....-',
-                    '(':'-.--.', ')':'-.--.-', '!':'-.-.--', ',': '--..--'}
+
  
 # Function to encrypt the string
 # according to the morse code chart
