@@ -1,37 +1,16 @@
-import asyncio
-import calendar
-import datetime
-import io
-import json
-import math
-import os
-import random
-import time
-import unicodedata
-
-import aiohttp
-
-import asyncpg
-import discord
-import humanize
-import requests
+import asyncio, calendar, datetime, io, json, math, os, random, time, unicodedata, aiohttp, discord, humanize, requests
+from asyncpg import create_pool
 from discord import DMChannel
 from discord.ext import commands, tasks
 from discord.app import Option
-from discord.ext.commands import (
-    BucketType,
-    MissingPermissions,
-    command,
-    cooldown,
-    has_permissions,
-)
+from discord.ext.commands import (BucketType,MissingPermissions,command,cooldown,has_permissions)
 from dotenv import load_dotenv
 from bot_data import *
 import ext.helpers as helpers
 from pathlib import Path
 
 async def create_db_pool():
-    bot.con = await asyncpg.create_pool(
+    bot.con = await create_pool(
         database="pycord", user="<insert user here>", password="<insert pass here>"
     )
 
@@ -39,7 +18,6 @@ async def create_db_pool():
 def get_extensions():
     extensions = []
     extensions.append("jishaku")
-
     for file in Path("cogs").glob("**/*.py"):
         if "!" in file.name or "DEV" in file.name:
             continue
