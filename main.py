@@ -8,7 +8,10 @@ from dotenv import load_dotenv
 from bot_data import *
 import ext.helpers as helpers
 from pathlib import Path
-from storage.morse import
+from storage.morse import MORSE_CODE_DICT
+
+reqd_guilds = [881207955029110855,869782707226439720]
+
 
 async def create_db_pool():
     bot.con = await create_pool(database="pycord", user="<insert user here>", password="<insert pass here>")
@@ -243,7 +246,7 @@ async def ping(ctx):
     await message.edit(embed=embed)
 
 
-@bot.slash_command(guild_ids=[881207955029110855, 869782707226439720], description="Frequently Asked Questions about pycord")
+@bot.slash_command(guild_ids=reqd_guilds, description="Frequently Asked Questions about pycord")
 async def faq(
     ctx,
     question: Option(str, "Choose your question", choices=["How to create Slash Commands", "How to create Context Menu Commands", "How to create buttons"]),
@@ -258,7 +261,7 @@ async def faq(
 
 
 
-@bot.slash_command(guild_ids=[869782707226439720, 881207955029110855])
+@bot.slash_command(guild_ids=reqd_guilds)
 async def issue(ctx, number:Option(int, "The issue number")):
 	link = f'https://github.com/Pycord-Development/pycord/issues/{number}'
 	response = requests.get(link)
@@ -267,7 +270,7 @@ async def issue(ctx, number:Option(int, "The issue number")):
 	else:
 		await ctx.send(f'That issue doesn\'t seem to exist. If you think this is a mistake, contact {owner}.')
 
-@bot.slash_command(guild_ids=[869782707226439720, 881207955029110855])
+@bot.slash_command(guild_ids=reqd_guilds)
 async def pr(ctx, number:Option(int, "The pr number")):
 	link = f'https://github.com/Pycord-Development/pycord/pull/{number}'
 	response = requests.get(link)
@@ -278,7 +281,7 @@ async def pr(ctx, number:Option(int, "The pr number")):
 
 
 
-@bot.user_command(name="Join Position", guild_ids=[881207955029110855, 869782707226439720])
+@bot.user_command(name="Join Position", guild_ids=reqd_guilds)
 async def _joinpos(ctx, member:discord.Member):
 	all_members = list(ctx.guild.members)
 	all_members.sort(key=lambda m: m.joined_at)
@@ -348,17 +351,17 @@ def decrypt(message):
  
     return decipher
 
-@bot.message_command(name="Encrypt to Morse", guild_ids=[869782707226439720, 881207955029110855])
+@bot.message_command(name="Encrypt to Morse", guild_ids=reqd_guilds)
 async def _tomorse(ctx, message:discord.message):
 	result = encrypt(message.content.upper())
 	await ctx.send(result)
 
-@bot.message_command(name="Decrypt Morse", guild_ids=[869782707226439720, 881207955029110855])
+@bot.message_command(name="Decrypt Morse", guild_ids=reqd_guilds)
 async def _frommorse(ctx, message:discord.message):
 	result = decrypt(message.content)
 	await ctx.send(result)
 
-@bot.message_command(name="Decrypt binary", guild_ids=[869782707226439720, 881207955029110855])
+@bot.message_command(name="Decrypt binary", guild_ids=[869782707226439720, 881207955029110855)
 async def _frombinary(ctx, message:discord.message):
 	a_binary_string = message.content
 	binary_values = a_binary_string.split()
@@ -415,7 +418,6 @@ async def _avatar(ctx, member:discord.Member):
 
 for ext in get_extensions():
     bot.load_extension(ext)
-
 load_dotenv()
 bot.loop.run_until_complete(create_db_pool())
 bot.run(os.getenv("TOKEN"))
