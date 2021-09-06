@@ -361,7 +361,7 @@ async def _frommorse(ctx, message:discord.message):
 	result = decrypt(message.content)
 	await ctx.send(result)
 
-@bot.message_command(name="Decrypt binary", guild_ids=[869782707226439720, 881207955029110855)
+@bot.message_command(name="Decrypt binary", guild_ids=reqd_guilds)
 async def _frombinary(ctx, message:discord.message):
 	a_binary_string = message.content
 	binary_values = a_binary_string.split()
@@ -376,7 +376,7 @@ async def _frombinary(ctx, message:discord.message):
 	
 	await ctx.send(ascii_string)
 
-@bot.message_command(name="Encrypt to binary", guild_ids=[869782707226439720, 881207955029110855])
+@bot.message_command(name="Encrypt to binary", guild_ids=reqd_guilds)
 async def _tobinary(ctx, message:discord.message):
 	a_string = message.content
 	a_byte_array = bytearray(a_string, "utf8")
@@ -406,7 +406,7 @@ async def _tobinary(ctx, message:discord.message):
 # 	hex_value = hex(an_integer)
 # 	await ctx.send(hex_value)
 
-@bot.user_command(name="Avatar",  guild_ids=[869782707226439720, 881207955029110855])
+@bot.user_command(name="Avatar",  guild_ids=reqd_guilds)
 async def _avatar(ctx, member:discord.Member):
 	embed = discord.Embed(title=f'{member}\'s avatar!', description=f"[Link]({member.avatar.url})", color=member.color)
 	try:
