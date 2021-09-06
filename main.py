@@ -24,12 +24,10 @@ from discord.ext.commands import (
     command,
     cooldown,
     has_permissions,
-    when_mentioned_or,
 )
 from dotenv import load_dotenv
 from bot_data import *
 import ext.helpers as helpers
-from pathlib import Path
 
 async def create_db_pool():
     bot.con = await asyncpg.create_pool(
