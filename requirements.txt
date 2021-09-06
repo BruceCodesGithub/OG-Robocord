@@ -6,4 +6,3 @@ aiohttp
 humanize
 requests
 jishaku
-# disputils # installs discord.py bruh
