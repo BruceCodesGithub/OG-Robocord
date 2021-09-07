@@ -9,7 +9,7 @@ from storage.bot_data import *
 import ext.helpers as helpers
 from pathlib import Path
 from storage.morse import *
-from storage.extensions import *
+from exten import *
 
 reqd_guilds = [881207955029110855,869782707226439720] #[pycord server,testing server]
 
