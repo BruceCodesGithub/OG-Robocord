@@ -12,6 +12,14 @@ from storage.morse import *
 
 reqd_guilds = [881207955029110855,869782707226439720] #[pycord server,testing server]
 
+owners = [
+571638000661037056 #bruce
+,761932885565374474 #oli
+,754557382708822137,  #marcus
+685082846993317953 #geno
+]
+owner = owners[0]
+
 class HelpCommand(commands.HelpCommand):
     def get_ending_note(self):
         return "Use {0}{1} [command] for more info on a command.".format(
