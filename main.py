@@ -5,13 +5,12 @@ from discord.ext import commands, tasks
 from discord.app import Option
 from discord.ext.commands import (BucketType,MissingPermissions,command,cooldown,has_permissions)
 from dotenv import load_dotenv
-from bot_data import *
+from storage.bot_data import *
 import ext.helpers as helpers
 from pathlib import Path
-from storage.morse import MORSE_CODE_DICT
+from storage.morse import *
 
-reqd_guilds = [881207955029110855,869782707226439720]
-
+reqd_guilds = [881207955029110855,869782707226439720] #[pycord server,testing server]
 
 async def create_db_pool():
     bot.con = await create_pool(database="pycord", user="<insert user here>", password="<insert pass here>")
@@ -125,17 +124,7 @@ async def on_command_error(ctx, error):
     error = getattr(error, "original", error)
 
     if ctx.author.id in ctx.bot.owner_ids:
-        if isinstance(
-            error,
-            (
-                commands.MissingAnyRole,
-                commands.CheckFailure,
-                commands.DisabledCommand,
-                commands.CommandOnCooldown,
-                commands.MissingPermissions,
-                commands.MaxConcurrencyReached,
-            ),
-        ):
+        if isinstance(error,(commands.MissingAnyRole,commands.CheckFailure,commands.DisabledCommand,commands.CommandOnCooldown,commands.MissingPermissions,commands.MaxConcurrencyReached),):
             try:
                 await ctx.reinvoke()
             except discord.ext.commands.CommandError as e:
@@ -143,24 +132,7 @@ async def on_command_error(ctx, error):
             else:
                 return
 
-    if isinstance(
-        error,
-        (
-            commands.BadArgument,
-            commands.MissingRequiredArgument,
-            commands.NoPrivateMessage,
-            commands.CheckFailure,
-            commands.DisabledCommand,
-            commands.CommandInvokeError,
-            commands.TooManyArguments,
-            commands.UserInputError,
-            commands.NotOwner,
-            commands.MissingPermissions,
-            commands.BotMissingPermissions,
-            commands.MaxConcurrencyReached,
-            commands.CommandNotFound,
-        ),
-    ):
+    if isinstance( error,(commands.BadArgument,commands.MissingRequiredArgument,commands.NoPrivateMessage,commands.CheckFailure,commands.DisabledCommand,commands.CommandInvokeError,commands.TooManyArguments,commands.UserInputError,commands.NotOwner,commands.MissingPermissions,commands.BotMissingPermissions,commands.MaxConcurrencyReached,commands.CommandNotFound,),):
         await helpers.log_command_error(ctx, exception, True)
         if not isinstance(error, commands.CommandNotFound):
             if await helpers.is_disabled(ctx):
@@ -213,9 +185,7 @@ async def on_command_error(ctx, error):
             pass
         await helpers.log_command_error(ctx, exception, False)
 
-
 bot.launch_time = datetime.datetime.utcnow()
-
 
 @bot.command()
 async def ping(ctx):
@@ -245,7 +215,6 @@ async def ping(ctx):
     start = time.perf_counter()
     await message.edit(embed=embed)
 
-
 @bot.slash_command(guild_ids=reqd_guilds, description="Frequently Asked Questions about pycord")
 async def faq(
     ctx,
@@ -258,8 +227,6 @@ async def faq(
 		await ctx.send(f"{data['context-menu-commands']}", ephemeral=isprivate)
 	elif question == "How to create buttons":
 		await ctx.send(f"{data['buttons']}", ephemeral=isprivate)
-
-
 
 @bot.slash_command(guild_ids=reqd_guilds)
 async def issue(ctx, number:Option(int, "The issue number")):
@@ -279,8 +246,6 @@ async def pr(ctx, number:Option(int, "The pr number")):
 	else:
 		await ctx.send(f'That pull request doesn\'t seem to exist in the repo. If you think this is a mistake, contact {owner}.')
 
-
-
 @bot.user_command(name="Join Position", guild_ids=reqd_guilds)
 async def _joinpos(ctx, member:discord.Member):
 	all_members = list(ctx.guild.members)
@@ -290,65 +255,31 @@ async def _joinpos(ctx, member:discord.Member):
 	embed = discord.Embed(title = "Member info", description = f'{member.mention} was the {ord(all_members.index(member) + 1)} person to join')
 	await ctx.send(embed=embed)
 
-
- 
-# Function to encrypt the string
-# according to the morse code chart
 def encrypt(message):
     cipher = ''
     for letter in message:
         if letter != ' ':
- 
-            # Looks up the dictionary and adds the
-            # correspponding morse code
-            # along with a space to separate
-            # morse codes for different characters
             cipher += MORSE_CODE_DICT[letter] + ' '
         else:
-            # 1 space indicates different characters
-            # and 2 indicates different words
             cipher += ' '
- 
     return cipher
- 
-# Function to decrypt the string
-# from morse to english
+
 def decrypt(message):
- 
-    # extra space added at the end to access the
-    # last morse code
     message += ' '
- 
     decipher = ''
     citext = ''
     for letter in message:
- 
-        # checks for space
         if (letter != ' '):
- 
-            # counter to keep track of space
             i = 0
- 
-            # storing morse code of a single character
             citext += letter
- 
-        # in case of space
         else:
-            # if i = 1 that indicates a new character
             i += 1
- 
-            # if i = 2 that indicates a new word
             if i == 2 :
- 
-                 # adding space to separate words
                 decipher += ' '
             else:
- 
-                # accessing the keys using their values (reverse of encryption)
                 decipher += list(MORSE_CODE_DICT.keys())[list(MORSE_CODE_DICT
                 .values()).index(citext)]
                 citext = ''
- 
     return decipher
 
 @bot.message_command(name="Encrypt to Morse", guild_ids=reqd_guilds)
@@ -365,15 +296,11 @@ async def _frommorse(ctx, message:discord.message):
 async def _frombinary(ctx, message:discord.message):
 	a_binary_string = message.content
 	binary_values = a_binary_string.split()
-
 	ascii_string = ""
 	for binary_value in binary_values:
 		an_integer = int(binary_value, 2)
-
 		ascii_character = chr(an_integer)
-
 		ascii_string += ascii_character
-	
 	await ctx.send(ascii_string)
 
 @bot.message_command(name="Encrypt to binary", guild_ids=reqd_guilds)
@@ -381,11 +308,9 @@ async def _tobinary(ctx, message:discord.message):
 	a_string = message.content
 	a_byte_array = bytearray(a_string, "utf8")
 	byte_list = []
-
 	for byte in a_byte_array:
 		binary_representation = bin(byte)
 		byte_list.append(binary_representation)
-
 	await ctx.send(" ".join(byte_list))
 
 # @bot.slash_command(name="Decrypt from hex", guild_ids=[869782707226439720, 881207955029110855])
@@ -415,9 +340,9 @@ async def _avatar(ctx, member:discord.Member):
 		embed.set_image(url=member.display_avatar.url)
 	await ctx.send(embed=embed)
 
-
 for ext in get_extensions():
     bot.load_extension(ext)
+
 load_dotenv()
 bot.loop.run_until_complete(create_db_pool())
 bot.run(os.getenv("TOKEN"))
