@@ -9,6 +9,7 @@ from storage.bot_data import *
 import ext.helpers as helpers
 from pathlib import Path
 from storage.morse import *
+from storage.extensions import *
 
 reqd_guilds = [881207955029110855,869782707226439720] #[pycord server,testing server]
 
@@ -103,15 +104,6 @@ bot = commands.Bot(
     ),
     status=discord.Status.online,
 )
-
-def get_extensions():
-    extensions = []
-    extensions.append("jishaku")
-    for file in Path("cogs").glob("**/*.py"):
-        if "!" in file.name or "DEV" in file.name:
-            continue
-        extensions.append(str(file).replace("/", ".").replace(".py", ""))
-    return extensions
 
 os.environ["JISHAKU_NO_UNDERSCORE"] = "True"
 os.environ["JISHAKU_RETAIN"] = "True"
