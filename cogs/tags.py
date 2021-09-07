@@ -10,9 +10,6 @@ class Tags(commands.Cog):
         self.db = Database(self.bot)
         self.paginate = paginator(self.bot)
 
-
-
-
     @commands.group(invoke_without_command=True)
     async def tag(self,ctx,name=None):
         if not name:
