@@ -11,19 +11,6 @@ from pathlib import Path
 from storage.morse import *
 
 reqd_guilds = [881207955029110855,869782707226439720] #[pycord server,testing server]
-
-async def create_db_pool():
-    bot.con = await create_pool(database="pycord", user="<insert user here>", password="<insert pass here>")
-
-def get_extensions():
-    extensions = []
-    extensions.append("jishaku")
-    for file in Path("cogs").glob("**/*.py"):
-        if "!" in file.name or "DEV" in file.name:
-            continue
-        extensions.append(str(file).replace("/", ".").replace(".py", ""))
-    return extensions
-
 class HelpCommand(commands.HelpCommand):
     def get_ending_note(self):
         return "Use {0}{1} [command] for more info on a command.".format(
@@ -96,7 +83,6 @@ class HelpCommand(commands.HelpCommand):
 
     send_command_help = send_group_help
 
-
 bot = commands.Bot(
     command_prefix="p!",
     description="The bot build with and for pycord.",
@@ -108,6 +94,15 @@ bot = commands.Bot(
     ),
     status=discord.Status.online,
 )
+
+def get_extensions():
+    extensions = []
+    extensions.append("jishaku")
+    for file in Path("cogs").glob("**/*.py"):
+        if "!" in file.name or "DEV" in file.name:
+            continue
+        extensions.append(str(file).replace("/", ".").replace(".py", ""))
+    return extensions
 
 os.environ["JISHAKU_NO_UNDERSCORE"] = "True"
 os.environ["JISHAKU_RETAIN"] = "True"
