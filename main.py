@@ -11,6 +11,7 @@ from pathlib import Path
 from storage.morse import *
 
 reqd_guilds = [881207955029110855,869782707226439720] #[pycord server,testing server]
+
 class HelpCommand(commands.HelpCommand):
     def get_ending_note(self):
         return "Use {0}{1} [command] for more info on a command.".format(
