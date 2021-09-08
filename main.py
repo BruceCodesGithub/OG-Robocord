@@ -273,6 +273,7 @@ async def faq(
             "How to create Slash Commands",
             "How to create Context Menu Commands",
             "How to create buttons",
+            "How to create dropdowns",
         ],
     ),
     display: Option(
@@ -290,6 +291,8 @@ async def faq(
         await ctx.send(f"{data['context-menu-commands']}", ephemeral=isprivate)
     elif question == "How to create buttons":
         await ctx.send(f"{data['buttons']}", ephemeral=isprivate)
+    elif question == "How to create dropdowns":
+        await ctx.send(f"{data['buttons']}", ephemeral=isprivate")
 
 
 class Faq(discord.ui.View):
