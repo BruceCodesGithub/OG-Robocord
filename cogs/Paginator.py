@@ -21,29 +21,29 @@ class paginator(commands.Cog):
                         await m.remove_reaction(i,member=self.bot.user)
                     break
                 else:
-                    if reaction.emoji == '⬅️':
+                    if reaction.emoji == a[0]:
                         l = p.index(c)
                         if not l == 0:
                             c = p[l-1]
-                            await m.remove_reaction('⬅️',member=ctx.author)
+                            await m.remove_reaction(a[0],member=ctx.author)
                             await m.edit(embed=c)
                         else:
-                            await m.remove_reaction('⬅️',member=ctx.author)
-                    elif reaction.emoji == '➡️':
+                            await m.remove_reaction(a[0],member=ctx.author)
+                    elif reaction.emoji == a[1]:
                         l = p.index(c)
                         if not l == len(p)-1:
                             c = p[l+1]
-                            await m.remove_reaction('➡️',member=ctx.author)
+                            await m.remove_reaction(a[1],member=ctx.author)
                             await m.edit(embed=c)
                         else:
-                            await m.remove_reaction('➡️',member=ctx.author) 
-                    elif reaction.emoji == '⏪':
+                            await m.remove_reaction(a[1],member=ctx.author) 
+                    elif reaction.emoji == a[2]:
                         c = p[0]
-                        await m.remove_reaction('⏪',member=ctx.author)
+                        await m.remove_reaction(a[2],member=ctx.author)
                         await m.edit(embed=c)
-                    elif reaction.emoji == '⏩':
+                    elif reaction.emoji == a[3]:
                         c = p[-1]
-                        await m.remove_reaction('⏩',member=ctx.author)
+                        await m.remove_reaction(a[3],member=ctx.author)
                         await m.edit(embed=c)                        
                     continue
             else:
