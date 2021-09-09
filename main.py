@@ -9,6 +9,7 @@ from discord.ext.commands import (
     cooldown,
     BucketType,
 )
+from pyston import PystonClient()
 import datetime
 import asyncio, aiohttp
 from discord import DMChannel
@@ -322,6 +323,11 @@ class Faq(discord.ui.View):
                 f"{data['dropdowns']}\nRequested by: {interaction.user}"
             )
 
+@bot.command(name="eval")
+async def _eval(ctx, code):
+    client=PystonClient()
+    output = await client.execute("python",code)
+    await ctx.send(output)
 
 @bot.command(name="faq")
 async def _faq(ctx):
@@ -479,7 +485,6 @@ async def _tomorse(ctx, message: discord.message):
 async def _frommorse(ctx, message: discord.message):
     result = decrypt(message.content)
     await ctx.send(result)
-
 
 @bot.message_command(
     name="Decrypt binary"
