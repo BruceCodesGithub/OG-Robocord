@@ -5,7 +5,6 @@ import random
 import sys
 import traceback
 
-# import asyncpg
 import discord
 from discord.ext import commands
 

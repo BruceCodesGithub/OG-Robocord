@@ -2,26 +2,13 @@
 Directly copied and modified from https://github.com/FrostiiWeeb/discord-ext-paginator/
 """
 
-import discord
-from typing import Union, List
 from contextlib import suppress
+from typing import List, Union
+
+import discord
 
 
 class Paginator:
-    """
-    An object for pagination for discord.py.
-
-    _pages: List[discord.Embed] : `The pages of the paginator.`
-    index : int : `The index page of the paginator.`
-    current : int : The current page of the paginator.
-    timeout : float = 90.0 : `The timeout for the paginator.`
-    ctx : NoneType : `The context for the paginator.`
-    message : NoneType : `The message for the paginator.`
-    compact : bool : `If the paginator's pages are less then 3 then compact will take over.
-    _buttons : dict : The reactions for the paginator.`
-
-    """
-
     __slots__ = (
         "_pages",
         "index",
@@ -56,37 +43,12 @@ class Paginator:
             "▶️": "last",
             "⏩": "first",
             "⏹️": "minus",
-            "🔢": "input",
         }
 
         if self.compact is True:
-            keys = ("⏩", "⏪", "🔢")
+            keys = ("⏩", "⏪")
             for key in keys:
                 del self._buttons[key]
-
-    async def go_to_input(self):
-        """
-        An function for the input.
-        """
-        try:
-
-            def check(m):
-                return m.author == self.ctx.author
-
-            await self.ctx.send("What page do you want to go to?")
-            msg = await self.ctx.bot.wait_for(
-                "message", timeout=20.0, check=check
-            )
-            if int(msg.content) > len(self._pages):
-                pass
-            elif int(msg.content) == len(self._pages):
-                self.current = len(self._pages)
-                await self.go_to_page(self._pages[self.current - 1])
-            else:
-                self.current = int(msg.content)
-                await self.message.edit(embed=self._pages[self.current - 1])
-        except Exception as e:
-            print(e)
 
     async def start(self, ctx):
         """
@@ -141,10 +103,9 @@ class Paginator:
                     await self.message.edit(
                         embed=self._pages[self.current - 1]
                     )
-                if str(reaction.emoji) == "🔢":
-                    await self.go_to_input()
 
             except Exception as e:
+                print(e)  # just for additional info, nothing else
                 with suppress(discord.Forbidden, discord.HTTPException):
                     for b in self._buttons:
                         await self.message.remove_reaction(

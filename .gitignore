@@ -133,3 +133,6 @@ dmypy.json
 
 # testings
 tests/
+
+# vscode nub
+.vscode

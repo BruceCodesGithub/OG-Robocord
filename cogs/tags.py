@@ -1,15 +1,15 @@
 import discord
-from discord.ext import commands, helpers
+from discord.ext import commands
 from cogs.database import Database
 from random import randint
-from cogs.Paginator import paginator
+from cogs.paginator import Paginator
 
 
 class Tags(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.db = Database(self.bot)
-        self.paginate = paginator(self.bot)
+        self.paginate = Paginator(self.bot)
 
     @commands.group(invoke_without_command=True)
     async def tag(self, ctx, name=None):
@@ -134,7 +134,7 @@ class Tags(commands.Cog):
                 embeds.append(embed)
                 d = ""
                 del c[0:-1]
-        await self.paginate.paginato(ctx, embeds)
+        await self.paginate.paginate(ctx, embeds)
 
     @commands.command()
     async def tags(self, ctx, m: discord.Member = None):
@@ -173,7 +173,7 @@ class Tags(commands.Cog):
                 embeds.append(embed)
                 d = ""
                 del c[0:-1]
-        await self.paginate.paginato(ctx, embeds)
+        await self.paginate.paginate(ctx, embeds)
 
 
 def setup(bot):

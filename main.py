@@ -1,23 +1,16 @@
 import discord
 from discord.ext import commands
 from discord.app import Option
-from discord.ext.commands import (
-    when_mentioned_or,
-    command,
-    has_permissions,
-    MissingPermissions,
-    cooldown,
-    BucketType,
-)
 import datetime
 import asyncio, aiohttp
-from discord import DMChannel
-import requests, humanize, json, asyncpg
-import calendar, math, unicodedata, random, os, time, io
+from dotenv import load_dotenv
+import requests, humanize
+import math, os, time
 import ext.helpers as helpers
 from bot_data import data
-from discord.ui import Button
-import re  # regex
+
+# from discord.ui import Button # just commented it cos idk
+# import re  # regex
 import sqlite3
 
 
@@ -120,7 +113,7 @@ bot = commands.Bot(
 bot.owner_ids = [
     571638000661037056,  # BruceDev
     761932885565374474,  # Oliiiii
-    685082846993317953,  # Geno
+    # 685082846993317953,  # Geno no
     754557382708822137,  # Marcus
 ]
 
@@ -148,7 +141,7 @@ async def on_ready():
 
 
 @bot.event
-async def on_command_error(ctx, error):
+async def on_command_error(ctx, error: commands.CommandError):
     exception = error
     if hasattr(ctx.command, "on_error"):
         pass
@@ -221,6 +214,7 @@ async def on_command_error(ctx, error):
     else:
 
         raise error
+        # un reachable code below, not sure what to do
         embed = discord.Embed(
             title="Oh no!",
             description=(
@@ -621,5 +615,5 @@ async def binary_decrypt(
 
 for i in ["jishaku", "cogs.rtfm"]:
     bot.load_extension(i)
-
+load_dotenv()
 bot.run(os.getenv("TOKEN"))
