@@ -22,7 +22,10 @@ import sqlite3
 
 
 owner = "BruceDev#0001"
-guild_ids=[881207955029110855, 869782707226439720] # a list of guild ids for guild-specific slash commands. TCA, Robocord Testing respectively
+guild_ids = [
+    881207955029110855,
+    869782707226439720,
+]  # a list of guild ids for guild-specific slash commands. TCA, Robocord Testing respectively
 
 
 class HelpCommand(commands.HelpCommand):
@@ -115,10 +118,10 @@ bot = commands.Bot(
 )
 
 bot.owner_ids = [
-    571638000661037056, # BruceDev
-    761932885565374474, # Oliiiii
-    685082846993317953, # Geno
-    754557382708822137, # Marcus
+    571638000661037056,  # BruceDev
+    761932885565374474,  # Oliiiii
+    685082846993317953,  # Geno
+    754557382708822137,  # Marcus
 ]
 
 connection = sqlite3.connect("db.db")
@@ -228,6 +231,7 @@ async def on_command_error(ctx, error):
         await ctx.send(embed=embed)
         await helpers.log_command_error(ctx, exception, False)
 
+
 bot.launch_time = datetime.datetime.utcnow()
 
 
@@ -252,7 +256,8 @@ async def ping(ctx):
     trip = end - start
     rt_ping = f"{(trip * 1000):.2f}ms ({humanize.precisedelta(datetime.timedelta(seconds=trip))})"
     embed.description = (
-        f"**{loading} Websocket:** {ws_ping}\n**" f":repeat: Round-Trip:** {rt_ping}."
+        f"**{loading} Websocket:** {ws_ping}\n**"
+        f":repeat: Round-Trip:** {rt_ping}."
     )
     await message.edit(embed=embed)
     await asyncio.sleep(0.5)
@@ -365,8 +370,7 @@ async def pr(ctx, number: Option(int, "The pr number")):
         )
 
 
-@bot.user_command(
-    name="Join Position")
+@bot.user_command(name="Join Position")
 async def _joinpos(ctx, member: discord.Member):
     all_members = list(ctx.guild.members)
     all_members.sort(key=lambda m: m.joined_at)
@@ -385,21 +389,53 @@ async def _joinpos(ctx, member: discord.Member):
     await ctx.send(embed=embed)
 
 
-MORSE_CODE_DICT = { 'A':'.-', 'B':'-...',
-                    'C':'-.-.', 'D':'-..', 'E':'.',
-                    'F':'..-.', 'G':'--.', 'H':'....',
-                    'I':'..', 'J':'.---', 'K':'-.-',
-                    'L':'.-..', 'M':'--', 'N':'-.',
-                    'O':'---', 'P':'.--.', 'Q':'--.-',
-                    'R':'.-.', 'S':'...', 'T':'-',
-                    'U':'..-', 'V':'...-', 'W':'.--',
-                    'X':'-..-', 'Y':'-.--', 'Z':'--..',
-                    '1':'.----', '2':'..---', '3':'...--',
-                    '4':'....-', '5':'.....', '6':'-....',
-                    '7':'--...', '8':'---..', '9':'----.',
-                    '0':'-----', ', ':'--..--', '.':'.-.-.-',
-                    '?':'..--..', '/':'-..-.', '-':'-....-',
-                    '(':'-.--.', ')':'-.--.-', '!':'-.-.--', ',': '--..--'}
+MORSE_CODE_DICT = {
+    "A": ".-",
+    "B": "-...",
+    "C": "-.-.",
+    "D": "-..",
+    "E": ".",
+    "F": "..-.",
+    "G": "--.",
+    "H": "....",
+    "I": "..",
+    "J": ".---",
+    "K": "-.-",
+    "L": ".-..",
+    "M": "--",
+    "N": "-.",
+    "O": "---",
+    "P": ".--.",
+    "Q": "--.-",
+    "R": ".-.",
+    "S": "...",
+    "T": "-",
+    "U": "..-",
+    "V": "...-",
+    "W": ".--",
+    "X": "-..-",
+    "Y": "-.--",
+    "Z": "--..",
+    "1": ".----",
+    "2": "..---",
+    "3": "...--",
+    "4": "....-",
+    "5": ".....",
+    "6": "-....",
+    "7": "--...",
+    "8": "---..",
+    "9": "----.",
+    "0": "-----",
+    ", ": "--..--",
+    ".": ".-.-.-",
+    "?": "..--..",
+    "/": "-..-.",
+    "-": "-....-",
+    "(": "-.--.",
+    ")": "-.--.-",
+    "!": "-.-.--",
+    ",": "--..--",
+}
 
 # we make a list of what to replace with what
 
@@ -465,25 +501,19 @@ def decrypt(message):
     return decipher
 
 
-@bot.message_command(
-    name="Encrypt to Morse"
-)
+@bot.message_command(name="Encrypt to Morse")
 async def _tomorse(ctx, message: discord.message):
     result = encrypt(message.content.upper())
     await ctx.send(result)
 
 
-@bot.message_command(
-    name="Decrypt Morse"
-)
+@bot.message_command(name="Decrypt Morse")
 async def _frommorse(ctx, message: discord.message):
     result = decrypt(message.content)
     await ctx.send(result)
 
 
-@bot.message_command(
-    name="Decrypt binary"
-)
+@bot.message_command(name="Decrypt binary")
 async def _frombinary(ctx, message: discord.message):
     a_binary_string = message.content
     binary_values = a_binary_string.split()
@@ -496,12 +526,12 @@ async def _frombinary(ctx, message: discord.message):
 
         ascii_string += ascii_character
 
-    await ctx.send(ascii_string, allowed_mentions=discord.AllowedMentions.none())
+    await ctx.send(
+        ascii_string, allowed_mentions=discord.AllowedMentions.none()
+    )
 
 
-@bot.message_command(
-    name="Encrypt to binary"
-)
+@bot.message_command(name="Encrypt to binary")
 async def _tobinary(ctx, message: discord.message):
     a_string = message.content
     a_byte_array = bytearray(a_string, "utf8")
@@ -512,6 +542,7 @@ async def _tobinary(ctx, message: discord.message):
         byte_list.append(binary_representation)
 
     await ctx.send(" ".join(byte_list))
+
 
 # ------
 # Commented because max commands reached
@@ -550,10 +581,7 @@ async def _avatar(ctx, member: discord.Member):
     await ctx.send(embed=embed)
 
 
-binary = bot.command_group(
-    "binary",
-    "Set of tools for converting binary"
-)
+binary = bot.command_group("binary", "Set of tools for converting binary")
 
 
 @binary.command(name="encrypt")
@@ -586,7 +614,9 @@ async def binary_decrypt(
 
         ascii_string += ascii_character
 
-    await ctx.send(ascii_string, allowed_mentions=discord.AllowedMentions.none())
+    await ctx.send(
+        ascii_string, allowed_mentions=discord.AllowedMentions.none()
+    )
 
 
 for i in ["jishaku", "cogs.rtfm"]:

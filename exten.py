@@ -1,5 +1,6 @@
 from pathlib import Path
 
+
 def get_extensions():
     extensions = []
     extensions.append("jishaku")

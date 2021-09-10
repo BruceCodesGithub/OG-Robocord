@@ -24,7 +24,9 @@ class Bot(commands.Bot):
                 print(e)
         if hasattr(self, "wavelink"):
             if not self.wavelink.session.closed:
-                await asyncio.wait_for(self.wavelink.session.close(), timeout=5)
+                await asyncio.wait_for(
+                    self.wavelink.session.close(), timeout=5
+                )
         if hasattr(self, "session"):
             if not self.session.closed:
                 await self.session.close()
@@ -53,7 +55,9 @@ class Context(commands.Context):
         default = {
             "timestamp": self.message.created_at,
             "description": description,
-            "color": random.choice([discord_colors[color] for color in discord_colors]),
+            "color": random.choice(
+                [discord_colors[color] for color in discord_colors]
+            ),
         }
         default.update(kwargs)
         return_embed = self.Embed(*args, **default)
@@ -71,7 +75,9 @@ class Context(commands.Context):
         }
         default.update(kwargs)
         return_embed = self.Embed(*args, **default)
-        return_embed.set_author(name=self.author, icon_url=self.author.avatar_url)
+        return_embed.set_author(
+            name=self.author, icon_url=self.author.avatar_url
+        )
         return_embed.set_footer(
             icon_url=self.bot.user.avatar_url,
             text=(
@@ -90,7 +96,9 @@ class Context(commands.Context):
         }
         default.update(kwargs)
         return_embed = self.Embed(*args, **default)
-        return_embed.set_author(name=self.author, icon_url=self.author.avatar_url)
+        return_embed.set_author(
+            name=self.author, icon_url=self.author.avatar_url
+        )
         return_embed.set_footer(
             icon_url=self.bot.user.avatar_url, text="Action successful"
         )
@@ -151,7 +159,9 @@ async def log_command_error(ctx, error, handled):
     else:
         channel = ctx.bot.get_channel(875973025424621598)
     title = "Ignoring exception in command {}:".format(ctx.command)
-    err = "".join(traceback.format_exception(type(error), error, error.__traceback__))
+    err = "".join(
+        traceback.format_exception(type(error), error, error.__traceback__)
+    )
     try:
         embed = discord.Embed(
             title=title,
@@ -171,7 +181,10 @@ async def log_command_error(ctx, error, handled):
             )
         except discord.errors.Forbidden:
             pass
-        print("Ignoring exception in command {}:".format(ctx.command), file=sys.stderr)
+        print(
+            "Ignoring exception in command {}:".format(ctx.command),
+            file=sys.stderr,
+        )
         traceback.print_exception(
             type(error), error, error.__traceback__, file=sys.stderr
         )
