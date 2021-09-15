@@ -58,14 +58,10 @@ class SphinxObjectFileReader:
         # next line says if it's a zlib header
         line = self.readline()
         if "zlib" not in line:
-            raise RuntimeError(
-                "Invalid objects.inv file, not z-lib compatible."
-            )
+            raise RuntimeError("Invalid objects.inv file, not z-lib compatible.")
 
         # This code mostly comes from the Sphinx repository.
-        entry_regex = re.compile(
-            r"(?x)(.+?)\s+(\S*:\S*)\s+(-?\d+)\s+(\S+)\s+(.*)"
-        )
+        entry_regex = re.compile(r"(?x)(.+?)\s+(\S*:\S*)\s+(-?\d+)\s+(\S+)\s+(.*)")
         for line in self.read_compressed_lines():
             match = entry_regex.match(line.rstrip())
             if not match:
@@ -95,9 +91,7 @@ class SphinxObjectFileReader:
                 "discord.py",
                 "pycord",
             ]:  # this changes to pycord in the master branch docs
-                key = key.replace("discord.ext.commands.", "").replace(
-                    "discord.", ""
-                )
+                key = key.replace("discord.ext.commands.", "").replace("discord.", "")
 
             result[f"{prefix}{key}"] = os.path.join(url, location)
 

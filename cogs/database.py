@@ -11,9 +11,7 @@ class Database(commands.Cog):
         )
 
     async def new(self, n, v, i):
-        exists = await self.bot.con.fetchrow(
-            "SELECT name FROM Tags WHERE name=$1", n
-        )
+        exists = await self.bot.con.fetchrow("SELECT name FROM Tags WHERE name=$1", n)
         if exists:
             return "A tag with that name already exists"
         else:
@@ -26,18 +24,14 @@ class Database(commands.Cog):
             return "Tag succesfully created"
 
     async def show(self, n):
-        e = await self.bot.con.fetchrow(
-            "SELECT content FROM Tags WHERE name=$1", n
-        )
+        e = await self.bot.con.fetchrow("SELECT content FROM Tags WHERE name=$1", n)
         if not e:
             return "No such tag found"
         else:
             return e[0]
 
     async def remove(self, n, auth, allowed=False):
-        e = await self.bot.con.fetchrow(
-            "SELECT content FROM Tags WHERE name=$1", n
-        )
+        e = await self.bot.con.fetchrow("SELECT content FROM Tags WHERE name=$1", n)
         if not e:
             return "No such tag found"
         else:
@@ -52,9 +46,7 @@ class Database(commands.Cog):
                 return "You dont own the tag"
 
     async def update(self, n, c, auth):
-        e = await self.bot.con.fetchrow(
-            "SELECT content FROM Tags WHERE name=$1", n
-        )
+        e = await self.bot.con.fetchrow("SELECT content FROM Tags WHERE name=$1", n)
         if not e:
             return "No such tag found"
         else:
@@ -71,18 +63,14 @@ class Database(commands.Cog):
                 return "You dont own the tag"
 
     async def data(self, n):
-        e = await self.bot.con.fetchrow(
-            "SELECT author FROM Tags WHERE name=$1", n
-        )
+        e = await self.bot.con.fetchrow("SELECT author FROM Tags WHERE name=$1", n)
         if e:
             return e[0]
         else:
             return "nothing found"
 
     async def transfer(self, n, auth, auth2):
-        e = await self.bot.con.fetchrow(
-            "SELECT author FROM Tags WHERE name=$1", n
-        )
+        e = await self.bot.con.fetchrow("SELECT author FROM Tags WHERE name=$1", n)
         if not e:
             return "No such tags found"
         else:
@@ -95,9 +83,7 @@ class Database(commands.Cog):
                 return "You dont own the tag"
 
     async def mine(self, auth):
-        e = await self.bot.con.fetch(
-            "SELECT name FROM Tags WHERE author=$1", auth
-        )
+        e = await self.bot.con.fetch("SELECT name FROM Tags WHERE author=$1", auth)
         if not e:
             return "You have no tags"
         else:
@@ -111,9 +97,7 @@ class Database(commands.Cog):
             return e
 
     async def set_aliases(self, n, a, auth):
-        e = await self.bot.con.fetchrow(
-            "SELECT content FROM Tags WHERE name=$1", n
-        )
+        e = await self.bot.con.fetchrow("SELECT content FROM Tags WHERE name=$1", n)
         if not e:
             return "Tag not found"
         else:
@@ -127,18 +111,14 @@ class Database(commands.Cog):
             return "SUCCESS"
 
     async def see_if_not(self, n):
-        e = await self.bot.con.fetchrow(
-            "SELECT author FROM Tags WHERE name=$1", n
-        )
+        e = await self.bot.con.fetchrow("SELECT author FROM Tags WHERE name=$1", n)
         if not e:
             return "Tag not found"
         else:
             return e[0]
 
     async def transfer_not(self, n, auth):
-        await self.bot.con.execute(
-            "UPDATE Tags SET author=$1 WHERE name=$2", auth, n
-        )
+        await self.bot.con.execute("UPDATE Tags SET author=$1 WHERE name=$2", auth, n)
         return "Succesfully Claimed"
 
     @commands.Cog.listener()

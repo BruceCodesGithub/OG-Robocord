@@ -60,10 +60,7 @@ class RTFM(commands.Cog):
 
         if not target:
             lis = "\n".join(
-                [
-                    f"{index}. {value}"
-                    for index, value in list(self.targets.keys())
-                ]
+                [f"{index}. {value}" for index, value in list(self.targets.keys())]
             )
             return await ctx.reply(
                 embed=ctx.error(
@@ -92,9 +89,7 @@ class RTFM(commands.Cog):
         await ctx.reply(
             embed=discord.Embed(
                 title=f"Best matches for {term} in {docs}",
-                description="\n".join(
-                    [f"[`{key}`]({url})" for key, url in results]
-                ),
+                description="\n".join([f"[`{key}`]({url})" for key, url in results]),
                 color=discord.Color.dark_theme(),
             )
         )

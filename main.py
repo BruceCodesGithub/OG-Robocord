@@ -250,8 +250,7 @@ async def ping(ctx):
     trip = end - start
     rt_ping = f"{(trip * 1000):.2f}ms ({humanize.precisedelta(datetime.timedelta(seconds=trip))})"
     embed.description = (
-        f"**{loading} Websocket:** {ws_ping}\n**"
-        f":repeat: Round-Trip:** {rt_ping}."
+        f"**{loading} Websocket:** {ws_ping}\n**" f":repeat: Round-Trip:** {rt_ping}."
     )
     await message.edit(embed=embed)
     await asyncio.sleep(0.5)
@@ -520,9 +519,7 @@ async def _frombinary(ctx, message: discord.message):
 
         ascii_string += ascii_character
 
-    await ctx.send(
-        ascii_string, allowed_mentions=discord.AllowedMentions.none()
-    )
+    await ctx.send(ascii_string, allowed_mentions=discord.AllowedMentions.none())
 
 
 @bot.message_command(name="Encrypt to binary")
@@ -608,9 +605,7 @@ async def binary_decrypt(
 
         ascii_string += ascii_character
 
-    await ctx.send(
-        ascii_string, allowed_mentions=discord.AllowedMentions.none()
-    )
+    await ctx.send(ascii_string, allowed_mentions=discord.AllowedMentions.none())
 
 
 for i in ["jishaku", "cogs.rtfm"]:

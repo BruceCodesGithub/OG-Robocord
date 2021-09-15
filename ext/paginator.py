@@ -68,10 +68,7 @@ class Paginator:
             await self.message.add_reaction(b)
 
         def check(reaction, user):
-            return (
-                str(reaction.emoji) in self._buttons
-                and user == self.ctx.author
-            )
+            return str(reaction.emoji) in self._buttons and user == self.ctx.author
 
         while True:
             try:
@@ -81,33 +78,21 @@ class Paginator:
                 if str(reaction.emoji) == "⏹️":
                     await self.message.delete()
                     break
-                if str(reaction.emoji) == "▶️" and self.current != len(
-                    self._pages
-                ):
+                if str(reaction.emoji) == "▶️" and self.current != len(self._pages):
                     self.current += 1
-                    await self.message.edit(
-                        embed=self._pages[self.current - 1]
-                    )
+                    await self.message.edit(embed=self._pages[self.current - 1])
                 if str(reaction.emoji) == "◀️" and self.current > 1:
                     self.current -= 1
-                    await self.message.edit(
-                        embed=self._pages[self.current - 1]
-                    )
+                    await self.message.edit(embed=self._pages[self.current - 1])
                 if str(reaction.emoji) == "⏩":
                     self.current = len(self._pages)
-                    await self.message.edit(
-                        embed=self._pages[self.current - 1]
-                    )
+                    await self.message.edit(embed=self._pages[self.current - 1])
                 if str(reaction.emoji) == "⏪":
                     self.current = 1
-                    await self.message.edit(
-                        embed=self._pages[self.current - 1]
-                    )
+                    await self.message.edit(embed=self._pages[self.current - 1])
 
             except Exception as e:
                 print(e)  # just for additional info, nothing else
                 with suppress(discord.Forbidden, discord.HTTPException):
                     for b in self._buttons:
-                        await self.message.remove_reaction(
-                            b, self.ctx.bot.user
-                        )
+                        await self.message.remove_reaction(b, self.ctx.bot.user)
