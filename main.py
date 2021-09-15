@@ -7,7 +7,7 @@ from dotenv import load_dotenv
 import requests, humanize
 import math, os, time
 import ext.helpers as helpers
-from bot_data import data
+from storage.bot_data import data
 
 # from discord.ui import Button # just commented it cos idk
 # import re  # regex
