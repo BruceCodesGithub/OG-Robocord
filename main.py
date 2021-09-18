@@ -609,7 +609,7 @@ async def binary_decrypt(
     await ctx.send(ascii_string, allowed_mentions=discord.AllowedMentions.none())
 
 
-for i in ["jishaku", "cogs.rtfm"]:
+for i in ["jishaku", "cogs.rtfm", "cogs.afksystem"]:
     bot.load_extension(i)
 load_dotenv()
 bot.run(os.getenv("TOKEN"))
