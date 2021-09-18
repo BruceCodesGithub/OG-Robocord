@@ -116,6 +116,7 @@ bot.owner_ids = [
     # 685082846993317953,  # Geno no
     754557382708822137,  # Marcus
 ]
+bot.afk_people = {}
 
 connection = sqlite3.connect("db.db")
 crsr = connection.cursor()
