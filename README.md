@@ -20,7 +20,7 @@ When creating the pull request, please make sure to specify the following in the
 
 Also make sure to create a new branch and commit your changes to that instead. -->
 
-Robocord has been moved and this repo is no longer supporting contributions. Please Open Pull Requests in [the new repo](https://github.com/Pycord-Development/Robocord) instead.
+Robocord has been moved and this repo is no longer supporting contributions. Please Open Pull Requests in [the new repo](https://github.com/Pycord-Development/Robocord), managed by BobDotCom instead.
 
 The reason Robocord was moved is because the Pycord Server Owner wanted to become its owner. The new Robocord is now a public bot and the contributers to this repo no longer manage it.
 
